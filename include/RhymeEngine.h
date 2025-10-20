@@ -1,0 +1,8 @@
+//
+// Created by Gerardo Gonzalez on 10/19/25.
+//
+
+#ifndef RHYMEENGINE_RHYMEENGINE_H
+#define RHYMEENGINE_RHYMEENGINE_H
+
+#endif //RHYMEENGINE_RHYMEENGINE_H
