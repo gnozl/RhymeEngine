@@ -20,8 +20,8 @@
 class RhymeEngine {
 private:
     std::string filename; // For save/load operations
-    std::vector<std::string> rhymes;
-    std::vector<std::tuple<PHONEME, COLOR>> rhymeColors;
+    std::vector<PHONEME> rhymes; // sequences of 3? phones to check rhymes
+    std::vector<std::tuple<std::vector<PHONEME>, COLOR>> rhymeColors;
 
 public:
     RhymeEngine();
@@ -29,9 +29,9 @@ public:
 
     void run();
     std::string getFileNameFromUser();
-    std::ifstream loadTextFile(std::string fileName);
+    std::ifstream loadTextFile(std::string file);
 
-    Text createText();
+    Text createText(std::string title, std::string file);
     std::string findIPA(std::string word);
 
     std::vector<std::string> findRhymes(Word * word);

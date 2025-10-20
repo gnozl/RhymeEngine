@@ -11,8 +11,8 @@
 class Text {
     private:
     std::string title;
-    int numberOfLines;
-    int TotalWords;
+    int numberOfLines = 0;
+    int TotalWords = 0;
     std::string rhymePattern;
 
     std::vector<Line*> lines;

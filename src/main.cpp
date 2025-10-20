@@ -19,8 +19,9 @@ int main()
 
     const std::string filename = rhymeEngine.getFileNameFromUser();
     rhymeEngine.loadTextFile(filename);
-
-    Text text = rhymeEngine.createText(); //TODO: This does a lot of stuff
+    std::string title;
+    std::cin >> title;
+    Text text = rhymeEngine.createText(title, filename); //TODO: This does a lot of stuff
 
     for (Line * line : text.getLines()) {
         Word * temp_word = line->getFinalWord();
