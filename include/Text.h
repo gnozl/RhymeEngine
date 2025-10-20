@@ -25,6 +25,8 @@ class Text {
     int getNumberOfLines() const {return numberOfLines;};
     int getTotalWords() const {return TotalWords;};
     std::string getRhymePattern() const {return rhymePattern;};
+    std::vector<Line*> getLines() const {return lines;};
+
 
     void setNumberOfLines(int numberOfLines);
     void setTotalWords(int TotalWords);

@@ -25,6 +25,7 @@ class Line {
     int getNumberOfSyllables();
     std::vector<Word*> getWords(int index);
     std::vector<bool> getRhythm(int index);
+    Word* getFinalWord();
 };
 
 #endif //RHYMEENGINE_LINE_H

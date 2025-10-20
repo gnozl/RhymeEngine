@@ -7,26 +7,35 @@
 #include <string>
 #include "phonemes.h"
 
+enum COLOR {NONE}; //TODO: fill with colors for printing
+
 class Word {
 private:
 
     int syllables;
     std::string english;
     std::string ipa_pronunciation;
-    std::vector<phoneme> phonemes;
+    std::vector<PHONEME> phonemes;
+    COLOR color = NONE;
 
 public:
     Word();
     ~Word();
 
-    int getSyllables();
-    std::string getEnglish();
-    std::string getIPAPronunciation();
-    phoneme getPhoneme(int index);
+    int getSyllables() {return syllables;};
+    std::string getEnglish() {return english;};
+    std::string getIPAPronunciation() {return ipa_pronunciation;};
+    PHONEME getPhoneme(int index) {return phonemes[index];};
+    COLOR getColor() const {return color;};
 
     void printPhonemes();
     void printEnglish();
+    void printWithColor();
     void printIPA();
+
+    void setSyllables(int syllables);
+    void setColor(COLOR color);
+
 
 
 };

@@ -20,7 +20,8 @@
 class RhymeEngine {
 private:
     std::string filename; // For save/load operations
-    std::vector<Word*> rhymes;
+    std::vector<std::string> rhymes;
+    std::vector<std::tuple<PHONEME, COLOR>> rhymeColors;
 
 public:
     RhymeEngine();
@@ -32,14 +33,16 @@ public:
 
     Text createText();
     std::string findIPA(std::string word);
-    std::string findEnglish(Word word1);
 
-    std::vector<Word*> findRhymes(Word word);
-    bool isRhyme(Word word1, Word word2);
+    std::vector<std::string> findRhymes(Word * word);
+    bool isRhyme(Word * word1, Word * word2);
 
     std::string convertWordToIPA(std::string string);
 
     bool saveTextFile(const std::string& newFileName);
+
+    void matchRhymeToColors(Word * word);
+    void printColorText();
 
 };
 

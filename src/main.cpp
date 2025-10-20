@@ -1,3 +1,6 @@
+#include <fstream>
+#include <iostream>
+
 #include "../include/phonemes.h"
 #include "../include/RhymeEngine.h"
 
@@ -10,6 +13,21 @@ int main()
     //TODO: Find rhymes inside text / end of lines
     //TODO: Print out the text, with rhymes highlighted
 
+    std::cout << "Intro message\n";
+
+    RhymeEngine rhymeEngine;
+
+    const std::string filename = rhymeEngine.getFileNameFromUser();
+    rhymeEngine.loadTextFile(filename);
+
+    Text text = rhymeEngine.createText(); //TODO: This does a lot of stuff
+
+    for (Line * line : text.getLines()) {
+        Word * temp_word = line->getFinalWord();
+        rhymeEngine.matchRhymeToColors(temp_word);
+        rhymeEngine.printColorText();
+
+        }
 
     return 0;
 }

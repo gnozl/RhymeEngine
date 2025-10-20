@@ -7,7 +7,7 @@
 
 //TODO: use real IPA pronunciation symbols?
 
-enum phoneme {
+enum PHONEME {
     // from https://stevehanov.ca/blog/index.php?id=8
     AE,    //[æ] sounds like the "a" in "dab"
     EY,    //[ ] sounds like the "a" in "air"
