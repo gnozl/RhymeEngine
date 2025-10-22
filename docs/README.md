@@ -18,3 +18,14 @@ mkdir build
 cd build
 cmake ..
 cmake --build .
+
+```
+
+## Usage
+```bash
+./RhymeEngine
+```
+
+## Author
+Gerardo Gonzalez - CIS 25 Final Project
+```

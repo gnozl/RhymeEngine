@@ -19,13 +19,13 @@ private:
     COLOR color = NONE;
 
 public:
-    Word();
+    Word(std::string english, std::string ipa_pronunciation);
     ~Word();
 
-    int getSyllables() {return syllables;};
+    int getSyllables() const {return syllables;};
     std::string getEnglish() {return english;};
     std::string getIPAPronunciation() {return ipa_pronunciation;};
-    PHONEME getPhoneme(int index) {return phonemes[index];};
+    PHONEME getPhoneme(int index) const {return phonemes[index];};
     COLOR getColor() const {return color;};
 
     void printPhonemes();
@@ -35,6 +35,7 @@ public:
 
     void setSyllables(int syllables);
     void setColor(COLOR color);
+    void addPhoneme(PHONEME phoneme);
 
 
 
