@@ -7,6 +7,8 @@
 
 //TODO: use real IPA pronunciation symbols?
 //TODO: combine similar sounds?
+//TODO: convert chars from dict.txt to enum
+//TODO: separate vowels & consonants
 
 enum PHONEME {
     // from https://stevehanov.ca/blog/index.php?id=8

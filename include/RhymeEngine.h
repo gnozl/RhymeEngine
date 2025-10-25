@@ -23,6 +23,9 @@ private:
     std::vector<PHONEME> rhymes; // sequences of 3? phones to check rhymes
     std::vector<std::tuple<PHONEME, COLOR>> rhymeColors;
 
+    std::vector<int> syllableArray;
+    std::vector<int> rhymeArray;
+
 public:
     RhymeEngine();
     ~RhymeEngine();
@@ -48,7 +51,13 @@ public:
     void printColorText();
 
     void setRhythm();
-    int scoreRhythm();
+
+    void createSyllableArray();
+    void createRhymeArray();
+    std::string checkForPattern(std::vector<int>);
+
+    int gradeText();
+    void printScore();
 
 };
 

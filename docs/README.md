@@ -13,7 +13,7 @@ A command-line program for finding and highlighting rhymes in a text
 
 ## Building
 
-```bash
+```
 mkdir build
 cd build
 cmake ..
@@ -22,10 +22,11 @@ cmake --build .
 ```
 
 ## Usage
-```bash
+```
 ./RhymeEngine
 ```
 
 ## Author
+```
 Gerardo Gonzalez - CIS 25 Final Project
 ```

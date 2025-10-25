@@ -30,15 +30,16 @@ public:
     std::string getIPAPronunciation() {return ipa_pronunciation;};
     PHONEME getPhoneme(int index) const {return phonemes[index];};
     COLOR getColor() const {return color;};
+    POS getPartOfSpeech() const {return partOfSpeech;};
 
     void printPhonemes();
     void printEnglish();
-    void printWithColor();
-    void printIPA();
+    void printWithColor(); //TODO: std::cout override
 
     void setSyllables(int syllables);
     void setColor(COLOR color);
-    void addPhoneme(PHONEME phoneme);
+    void addPhoneme(PHONEME phoneme); //TODO +=operator override
+    void setPartOfSpeech(POS partOfSpeech);
 
 
 

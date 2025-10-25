@@ -66,15 +66,15 @@
 - Loop thru chars in the IPA of the word
 - vowelReached = false //syllables are separated by vowel sounds
 - if stress marker is read (, or `), bool stress = true
-- if char == vowel, vowelReached = true, syllable++, rhythm.pushback(stress)  
+- if char == vowel, if vowelReached = true, syllable++, rhythm.pushback(stress)
 - reset stress to false
 
 ## Grade text based on consistent rhyme/meter  
 - Make an SyllablesArray from each Line.numberOfSyllables
 - Make an array of each final Word rhyme / COLOR
-- Check for regular patterns in each array
-- Check for a pattern after combining arrays
-- Give points if patterns are found (not sure how to do this yet)
+- Check for regular patterns in each array (not sure how to do this yet)
+- Give points if patterns are found 
+- Print out score & rhyme pattern
 
 ## Example:
 
