@@ -6,6 +6,7 @@
 #define RHYMEENGINE_PHONEMES_H
 
 //TODO: use real IPA pronunciation symbols?
+//TODO: combine similar sounds?
 
 enum PHONEME {
     // from https://stevehanov.ca/blog/index.php?id=8

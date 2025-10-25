@@ -7,7 +7,9 @@
 #include <string>
 #include "phonemes.h"
 
-enum COLOR {NONE}; //TODO: fill with colors for printing
+enum COLOR {NO_COLOR}; //TODO: fill with colors for printing
+enum POS {NO_POS}; //TODO: fill with parts of speech
+//TODO:Move enums to their own files
 
 class Word {
 private:
@@ -16,7 +18,8 @@ private:
     std::string english;
     std::string ipa_pronunciation;
     std::vector<PHONEME> phonemes;
-    COLOR color = NONE;
+    COLOR color = NO_COLOR;
+    POS partOfSpeech = NO_POS;
 
 public:
     Word(std::string english, std::string ipa_pronunciation);

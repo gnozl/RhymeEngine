@@ -47,6 +47,9 @@ public:
     void matchRhymeToColors(Word * word);
     void printColorText();
 
+    void setRhythm();
+    int scoreRhythm();
+
 };
 
 #endif //RHYMEENGINE_RHYMEENGINE_H
