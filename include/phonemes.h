@@ -4,6 +4,7 @@
 
 #ifndef RHYMEENGINE_PHONEMES_H
 #define RHYMEENGINE_PHONEMES_H
+#include <map>
 
 //TODO: use real IPA pronunciation symbols?
 //TODO: combine similar sounds?
@@ -59,6 +60,55 @@ enum PHONEME {
     EU,    //[ ] sounds like the "eu" in "cordon bleu"
     ZZ,    //[z] sounds like the "z" in "zoo"
     };
+
+const std::map<PHONEME, std::string> phoneString = {
+    {AE, "AE"},
+    {EY, "EY"},
+    {YR, "YR"},
+    {AH, "AH"},
+    {UE, "UE"},
+    {AA, "AA"},
+    {AU, "AU"},
+    {DH, "DH"},
+    {EH, "EH"},
+    {IH, "IH"},
+    {NG, "NG"},
+    {AW, "AW"},
+    {OI, "OI"},
+    {ER, "ER"},
+    {SH, "SH"},
+    {TH, "TH"},
+    {UH, "UH"},
+    {YU, "YU"},
+    {DS, "DS"},
+    {AI, "AI"},
+    {BB, "BB"},
+    {DD, "DD"},
+    {DJ, "DJ"},
+    {EI, "EI"},
+    {FF, "FF"},
+    {GG, "GG"},
+    {HH, "HH"},
+    {HW, "HW"},
+    {II, "II"},
+    {JJ, "JJ"},
+    {KK, "KK"},
+    {LL, "LL"},
+    {MM, "MM"},
+    {NN, "NN"},
+    {OU, "OU"},
+    {PP, "PP"},
+    {RR, "RR"},
+    {SS, "SS"},
+    {TT, "TT"},
+    {CH, "CH"},
+    {OO, "OO"},
+    {VV, "VV"},
+    {WW, "WW"},
+    {XH, "XH"},
+    {EU, "EU"},
+    {ZZ, "ZZ"},
+};
 
 /*
     // from https://stevehanov.ca/blog/index.php?id=8
