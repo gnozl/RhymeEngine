@@ -14,6 +14,7 @@ Word::Word(std::string english, POS partOfSpeech, std::string pronunciation) {
     this->english = std::move(english);
     this->partOfSpeech = partOfSpeech;
     this->pronunciation = std::move(pronunciation);
+    std::erase(this->pronunciation, '/');
 
     for (char c : this->pronunciation) {
         if (c == '/' || c == '\'' || c == ',' || c == '_') continue;
