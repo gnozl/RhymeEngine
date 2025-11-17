@@ -32,10 +32,21 @@ void test_make_word() {
     std::cout << "✓ Make Word test passed\n";
 }
 
+void test_cout_operator_overload() {
+    Word word("operation", NOUN, ",/A/p/^/'r/2//S//^/n");
+    word.setColor(BLUE_BRIGHT);
+
+    std::cout << word << std::endl;
+
+    std::cout << "✓ Operator Overload test passed\n";
+}
+
+
 int main() {
     std::cout << "Running tests..." << std::endl;
 
     test_make_word();
+    test_cout_operator_overload();
 
     return 0;
 
