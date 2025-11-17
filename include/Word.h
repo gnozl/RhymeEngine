@@ -4,45 +4,47 @@
 
 #ifndef RHYMEENGINE_WORD_H
 #define RHYMEENGINE_WORD_H
+#include "Phonemes.h"
+#include "PartsOfSpeech.h"
+#include "Colors.h"
+#include <vector>
+#include <iostream>
 #include <string>
-#include "phonemes.h"
-
-enum COLOR {NO_COLOR}; //TODO: fill with colors for printing
-enum POS {NO_POS}; //TODO: fill with parts of speech
-//TODO:Move enums to their own files
 
 class Word {
 private:
 
-    int syllables;
     std::string english;
-    std::string ipa_pronunciation;
+    POS partOfSpeech;
+    std::string pronunciation;
+
+    int syllables = 0;
     std::vector<PHONEME> phonemes;
-    COLOR color = NO_COLOR;
-    POS partOfSpeech = NO_POS;
+    COLOR color = NONE;
+
+
+    static bool isVowel(PHONEME phone);
 
 public:
-    Word(std::string english, std::string ipa_pronunciation);
+    Word(std::string english, POS partOfSpeech, std::string pronunciation);
     ~Word();
 
     int getSyllables() const {return syllables;};
     std::string getEnglish() {return english;};
-    std::string getIPAPronunciation() {return ipa_pronunciation;};
+    std::string getPronunciation() {return pronunciation;};
     PHONEME getPhoneme(int index) const {return phonemes[index];};
+    unsigned phonemeCount() const {return phonemes.size();};
     COLOR getColor() const {return color;};
     POS getPartOfSpeech() const {return partOfSpeech;};
 
-    void printPhonemes();
-    void printEnglish();
-    void printWithColor(); //TODO: std::cout override
+    void printPronunciation() const;
+    void printEnglish() const;
 
-    void setSyllables(int syllables);
     void setColor(COLOR color);
-    void addPhoneme(PHONEME phoneme); //TODO +=operator override
-    void setPartOfSpeech(POS partOfSpeech);
+    void addPhoneme(PHONEME phoneme);
+    void printInColor() const;
 
-
-
+    friend std::ostream& operator<<(std::ostream& os, const Word& word);
 };
 
 #endif //RHYMEENGINE_WORD_H
