@@ -27,8 +27,9 @@ class Text {
     [[nodiscard]] std::vector<Line> getLines() {return lines;};
 
     void setRhymePattern(const std::string& rhymePattern);
-
     void addLine(Line & line);
+
+    void print();
 };
 
 #endif //RHYMEENGINE_TEXT_H

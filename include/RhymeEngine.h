@@ -45,7 +45,7 @@ public:
     /* Finds exact match of word in dict.txt, inputs whole line into dictionaryEntry
      Returns false if no match found
      */
-    static bool findWordInDictionary(const std::string & word, std::ifstream & dictionary, std::string & dictionaryEntry);
+    static bool findWordInDictionary(const std::string & english, std::ifstream & dictionary, std::string & dictionaryEntry);
 
     static std::vector<std::string> findRhymes(Word & word);
     static bool isRhyme(Word & word1, Word & word2);

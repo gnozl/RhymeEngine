@@ -71,7 +71,7 @@ enum PHONEME {
     RA,    //[R] sounds like the "r" in "rojo"
     };
 
-const std::unordered_map<char, PHONEME> charToPhone = {
+const std::unordered_map<char, PHONEME> charToPhone = { //TODO: Reorganize to same order as enums
     {'-', EH},
     {'A', AA},
     {'E', EE},
@@ -93,6 +93,7 @@ const std::unordered_map<char, PHONEME> charToPhone = {
     {'5', OU},
     {'6', EY},
     {'b', BB},
+    {'d', DD},
     {'p', PP},
     {'t', TT},
     {'g', GG},

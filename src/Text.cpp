@@ -32,3 +32,11 @@ void Text::setRhymePattern(const std::string& rhymePattern) {
 void Text::addLine(Line & line) {
     this->lines.push_back(line);
 }
+
+void Text::print() {
+    for (Line line : lines) {
+        for (Word word : line.getWords()) {
+            std::cout << word << " ";
+        }
+    }
+}

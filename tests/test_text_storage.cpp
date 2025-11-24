@@ -34,6 +34,9 @@ void test_make_word() {
 
 void test_cout_operator_overload() {
     Word word("operation", NOUN, ",/A/p/^/'r/2//S//^/n");
+
+    std::cout << word << std::endl;
+
     word.setColor(BLUE_BRIGHT);
 
     std::cout << word << std::endl;
