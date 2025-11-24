@@ -31,6 +31,7 @@ void RhymeEngine::run() {
     std::cout << "Text file successfully created." << std::endl;
 
     text.print();
+    text.printIPA();
 
     textFile.close();
     dictionaryFile.close();
@@ -73,7 +74,7 @@ bool RhymeEngine::createText(std::ifstream & file, Text & text, std::ifstream & 
                 std::cout << "Failed to create word: " + nextWordString << std::endl;
             }
             else {
-                std::cout << "Word " << nextWordString << " created successfully." << std::endl;
+                std::cout << "Word " << newWord.getEnglish() << " created successfully." << std::endl;
                 newLine.addWord(newWord); // Add Word to Line object
                 }
             }
@@ -135,7 +136,11 @@ bool RhymeEngine::findWordInDictionary(const std::string & english, std::ifstrea
 
         if (dictionaryWord == english) { // Perfect match found
             found = true;
-            dictionaryEntry = line;
+            dictionaryEntry += dictionaryWord;
+            dictionaryEntry += " ";
+            dictionaryEntry += dictionaryPOS;
+            dictionaryEntry += " ";
+            dictionaryEntry += dictionaryPronunciation;
         }
 
         if (!found && dictionaryWord[dictionaryWord.length()-1]=='y') { // if word ends in y

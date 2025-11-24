@@ -35,8 +35,18 @@ void Text::addLine(Line & line) {
 
 void Text::print() {
     for (Line line : lines) {
-        for (Word word : line.getWords()) {
+        for (const Word& word : line.getWords()) {
             std::cout << word << " ";
         }
+        std::cout << std::endl;
+    }
+}
+
+void Text::printIPA() {
+    for (Line line : lines) {
+        for (const Word& word : line.getWords()) {
+            word.printPronunciation();
+        }
+        std::cout << std::endl;
     }
 }

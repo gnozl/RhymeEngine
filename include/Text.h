@@ -21,7 +21,9 @@ class Text {
     Text(std::string title, std::string & fileName);
     ~Text();
 
-    [[nodiscard]] int getNumberOfLines() const {return (lines.size());};
+    [[nodiscard]] int getNumberOfLines() const {return (lines.size());}
+
+
     [[nodiscard]] int getTotalWords() const;
     [[nodiscard]] std::string getRhymePattern() {return rhymePattern;};
     [[nodiscard]] std::vector<Line> getLines() {return lines;};
@@ -30,6 +32,7 @@ class Text {
     void addLine(Line & line);
 
     void print();
+    void printIPA();
 };
 
 #endif //RHYMEENGINE_TEXT_H
