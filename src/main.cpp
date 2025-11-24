@@ -1,7 +1,3 @@
-#include <fstream>
-#include <iostream>
-
-#include "../include/Phonemes.h"
 #include "../include/RhymeEngine.h"
 
 //For printing colors to Windows terminal
@@ -33,24 +29,7 @@ int main()
     //TODO: Find rhymes inside text / end of lines
     //TODO: Print out the text, with rhymes highlighted
 
-    RhymeEngine rhymeEngine;
-    rhymeEngine.run();
-
-    // std::cout << "Intro message\n";
-
-    // const std::string filename = rhymeEngine.getFileNameFromUser();
-    // rhymeEngine.loadTextFile(filename);
-    // std::string title;
-    // std::cin >> title;
-    // Text text = rhymeEngine.createText(title, filename); //TODO: This does a lot of stuff
-
-
-    // for (Line * line : text.getLines()) {
-    //     Word * temp_word = line->getFinalWord();
-    //     rhymeEngine.matchRhymeToColors(temp_word);
-    //     rhymeEngine.printColorText();
-    //
-    //     }
+    RhymeEngine::run();
 
     return 0;
 }

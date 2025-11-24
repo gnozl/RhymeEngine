@@ -13,10 +13,19 @@ add_library(RhymeEngine
         include/colors.h
         src/Word.cpp
         include/PartsOfSpeech.h
+        include/RhymeEngine.h
+        src/RhymeEngine.cpp
+        include/dict.txt
+        src/Text.cpp
+        src/Line.cpp
 )
 
 # Add test executable
-add_executable(test_rhyme_engine tests/test_rhyme_engine.cpp)
+add_executable(rhyme_engine src/main.cpp
+        src/main.cpp)
+target_link_libraries(rhyme_engine RhymeEngine)
+
+add_executable(test_rhyme_engine tests/test_text_storage.cpp)
 target_link_libraries(test_rhyme_engine RhymeEngine)
 
 # Register tests with CTest

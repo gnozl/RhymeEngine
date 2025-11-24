@@ -18,7 +18,6 @@ private:
     POS partOfSpeech;
     std::string pronunciation;
 
-    int syllables = 0;
     std::vector<PHONEME> phonemes;
     COLOR color = NONE;
 
@@ -26,19 +25,26 @@ private:
     static bool isVowel(PHONEME phone);
 
 public:
+    Word();
     Word(std::string english, POS partOfSpeech, std::string pronunciation);
     ~Word();
 
-    int getSyllables() const {return syllables;};
-    std::string getEnglish() {return english;};
-    std::string getPronunciation() {return pronunciation;};
-    PHONEME getPhoneme(int index) const {return phonemes[index];};
-    unsigned phonemeCount() const {return phonemes.size();};
-    COLOR getColor() const {return color;};
-    POS getPartOfSpeech() const {return partOfSpeech;};
+    [[nodiscard]] int getSyllables() const;
+    [[nodiscard]] std::string getEnglish() {return english;};
+    [[nodiscard]] std::string getPronunciation() {return pronunciation;};
+    [[nodiscard]] std::vector<PHONEME> getPhonemes() const {return phonemes;};
+    [[nodiscard]] int phonemeCount() const {return phonemes.size();};
+    [[nodiscard]] COLOR getColor() const {return color;};
+    [[nodiscard]] POS getPartOfSpeech() const {return partOfSpeech;};
 
     void printPronunciation() const;
     void printEnglish() const;
+
+    void setEnglish(std::string english);
+    void setPartOfSpeech(POS partOfSpeech);
+    void setPartOfSpeech(char partOfSpeech);
+
+    void setPronunciation(std::string& pronunciation);
 
     void setColor(COLOR color);
     void addPhoneme(PHONEME phoneme);

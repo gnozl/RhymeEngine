@@ -19,45 +19,52 @@
 
 class RhymeEngine {
 private:
-    std::string filename; // For save/load operations
-    std::vector<PHONEME> rhymes; // sequences of 3? phones to check rhymes
-    std::vector<std::tuple<PHONEME, COLOR>> rhymeColors;
+    // sequences of phonemes to check rhymes against, and their associated color
+    std::vector<std::tuple<std::string, COLOR>> rhymeColors;
 
     std::vector<int> syllableArray;
     std::vector<int> rhymeArray;
+
+    // Opens dict.txt in filestream
+    static void loadDictionary(std::ifstream & file);
+    // Asks user for file to open; Returns true is successful
+    static bool openFile(std::ifstream & file);
 
 public:
     RhymeEngine();
     ~RhymeEngine();
 
-    void run();
-    std::string getFileNameFromUser();
-    std::ifstream loadTextFile(std::string file);
+    static void run();
 
-    Text createText(std::string title, std::string file);
-    Line createLine();
-    Word createWord(std::string word);
+    // Using selected filestream, create Text object, using dictionary; Returns true if successful
+    static bool createText(std::ifstream &file, Text &text, std::ifstream &dictionary);
 
-    std::string findIPA(std::string word);
+    // Edits Word object using data from dictionary
+    static bool createWord(std::string &english, Word &word, std::ifstream &dictionary);
 
-    std::vector<std::string> findRhymes(Word * word);
-    bool isRhyme(Word * word1, Word * word2);
+    /* Finds exact match of word in dict.txt, inputs whole line into dictionaryEntry
+     Returns false if no match found
+     */
+    static bool findWordInDictionary(const std::string & word, std::ifstream & dictionary, std::string & dictionaryEntry);
 
-    std::string convertWordToIPA(std::string string);
+    static std::vector<std::string> findRhymes(Word & word);
+    static bool isRhyme(Word & word1, Word & word2);
 
-    bool saveTextFile(const std::string& newFileName);
 
-    void matchRhymeToColors(Word * word);
-    void printColorText();
-
-    void setRhythm();
-
-    void createSyllableArray();
-    void createRhymeArray();
-    std::string checkForPattern(std::vector<int>);
-
-    int gradeText();
-    void printScore();
+    // TODO: Future Features
+    // bool saveTextFile(const std::string& newFileName);
+    //
+    // void matchRhymeToColors(Word * word);
+    // void printColorText();
+    //
+    // void setRhythm();
+    //
+    // void createSyllableArray();
+    // void createRhymeArray();
+    // std::string checkForPattern(std::vector<int>);
+    //
+    // int gradeText();
+    // void printScore();
 
 };
 

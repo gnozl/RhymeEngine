@@ -10,6 +10,12 @@ bool Word::isVowel(const PHONEME phone) {
     return false;
 }
 
+Word::Word() {
+    this->english = "";
+    this->partOfSpeech = NO_POS;
+    this->pronunciation = "";
+}
+
 Word::Word(std::string english, POS partOfSpeech, std::string pronunciation) {
     this->english = std::move(english);
     this->partOfSpeech = partOfSpeech;
@@ -24,6 +30,16 @@ Word::Word(std::string english, POS partOfSpeech, std::string pronunciation) {
 
 Word::~Word() = default;
 
+int Word::getSyllables() const {
+    int syllables = 0;
+    for (const PHONEME phone : this->phonemes) {
+        if (isVowel(phone)) {
+            syllables++;
+        }
+    }
+    return syllables;
+}
+
 void Word::printPronunciation() const {
     std::cout << pronunciation << std::endl;
 }
@@ -32,14 +48,39 @@ void Word::printEnglish() const {
     std::cout << english << std::endl;
 }
 
+void Word::setEnglish(std::string english) {
+    this->english = std::move(english);
+}
+
+void Word::setPartOfSpeech(POS partOfSpeech) {
+    this->partOfSpeech = partOfSpeech;
+}
+
+void Word::setPartOfSpeech(char partOfSpeech) {
+    if (!charToPOS.contains(partOfSpeech)) {
+        return;
+    }
+    else {
+        this->partOfSpeech = charToPOS.at(partOfSpeech);
+    }
+}
+
+void Word::setPronunciation(std::string& pronunciation_string) {
+    this->pronunciation = std::move(pronunciation_string);
+    std::erase(this->pronunciation, '/');
+
+    for (char c : this->pronunciation) {
+        if (c == '/' || c == '\'' || c == ',' || c == '_') continue;
+        addPhoneme(charToPhone.at(c));
+    }
+
+}
+
 void Word::setColor(COLOR color) {
     this->color = color;
 }
 
 void Word::addPhoneme(PHONEME phoneme) {
-    if (isVowel(phoneme)) {
-        syllables++;
-    }
     phonemes.push_back(phoneme);
 }
 

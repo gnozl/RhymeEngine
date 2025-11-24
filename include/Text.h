@@ -11,28 +11,24 @@
 class Text {
     private:
     std::string title;
-    int numberOfLines = 0;
-    int TotalWords = 0;
     std::string rhymePattern;
 
-    std::vector<Line*> lines;
+    std::vector<Line> lines;
 
     public:
 
-    explicit Text(std::string title, std::string fileName);
+    Text();
+    Text(std::string title, std::string & fileName);
     ~Text();
 
-    int getNumberOfLines() const {return numberOfLines;};
-    int getTotalWords() const {return TotalWords;};
-    std::string getRhymePattern() const {return rhymePattern;};
-    std::vector<Line*> getLines() const {return lines;};
+    [[nodiscard]] int getNumberOfLines() const {return (lines.size());};
+    [[nodiscard]] int getTotalWords() const;
+    [[nodiscard]] std::string getRhymePattern() {return rhymePattern;};
+    [[nodiscard]] std::vector<Line> getLines() {return lines;};
 
+    void setRhymePattern(const std::string& rhymePattern);
 
-    void setNumberOfLines(int numberOfLines);
-    void setTotalWords(int TotalWords);
-    void setRhymePattern(std::string rhymePattern);
-
-    void addLine(Line *line);
+    void addLine(Line & line);
 };
 
 #endif //RHYMEENGINE_TEXT_H
