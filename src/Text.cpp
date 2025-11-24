@@ -30,10 +30,12 @@ void Text::setRhymePattern(const std::string& rhymePattern) {
 }
 
 void Text::addLine(Line & line) {
+    //std::cout << "Text::addLine()" << std::endl;
     this->lines.push_back(line);
 }
 
 void Text::print() {
+    //std::cout << "Text::print()" << std::endl;
     for (Line line : lines) {
         for (const Word& word : line.getWords()) {
             std::cout << word << " ";
@@ -43,9 +45,11 @@ void Text::print() {
 }
 
 void Text::printIPA() {
+    //std::cout << "Text::printIPA()" << std::endl;
     for (Line line : lines) {
         for (const Word& word : line.getWords()) {
             word.printPronunciation();
+            std::cout << " ";
         }
         std::cout << std::endl;
     }

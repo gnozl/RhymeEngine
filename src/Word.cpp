@@ -41,7 +41,7 @@ int Word::getSyllables() const {
 }
 
 void Word::printPronunciation() const {
-    std::cout << pronunciation << std::endl;
+    std::cout << pronunciation;
 }
 
 void Word::printEnglish() const {
@@ -73,7 +73,6 @@ void Word::setPronunciation(std::string& pronunciation_string) {
         if (c == '/' || c == '\'' || c == ',' || c == '_') continue;
         addPhoneme(charToPhone.at(c));
     }
-
 }
 
 void Word::setColor(COLOR color) {

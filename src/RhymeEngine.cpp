@@ -15,6 +15,8 @@ RhymeEngine::RhymeEngine() = default;
 RhymeEngine::~RhymeEngine() = default;
 
 void RhymeEngine::run() {
+    //std::cout << "RhymeEngine::run()" << std::endl;
+
     std::ifstream dictionaryFile;
     loadDictionary(dictionaryFile);
 
@@ -28,7 +30,6 @@ void RhymeEngine::run() {
         std::cout << "Text file creation failed." << std::endl;
         return;
     }
-    std::cout << "Text file successfully created." << std::endl;
 
     text.print();
     text.printIPA();
@@ -38,6 +39,8 @@ void RhymeEngine::run() {
 }
 
 void RhymeEngine::loadDictionary(std::ifstream & file) {
+    //std::cout << "RhymeEngine::loadDictionary()" << std::endl;
+
     file.open("../include/test_dict.txt");
     if (!file.is_open()) {
         throw std::runtime_error("Unable to open dictionary file.");
@@ -45,6 +48,8 @@ void RhymeEngine::loadDictionary(std::ifstream & file) {
 }
 
 bool RhymeEngine::openFile(std::ifstream & file) {
+    //std::cout << "RhymeEngine::openFile()" << std::endl;
+
     std::cout << "Welcome to RhymeEngine!" << std::endl;
     std::cout << "Which .txt file would you like to open? ";
     string userInput;
@@ -62,6 +67,8 @@ bool RhymeEngine::openFile(std::ifstream & file) {
     }
 
 bool RhymeEngine::createText(std::ifstream & file, Text & text, std::ifstream & dictionary) {
+    //std::cout << "RhymeEngine::createText()" << std::endl;
+
     bool success = false;
     std::string nextLineOfDictionary;
     while (std::getline(file, nextLineOfDictionary)) { // std::getline returns false at End of File
@@ -74,7 +81,7 @@ bool RhymeEngine::createText(std::ifstream & file, Text & text, std::ifstream & 
                 std::cout << "Failed to create word: " + nextWordString << std::endl;
             }
             else {
-                std::cout << "Word " << newWord.getEnglish() << " created successfully." << std::endl;
+                //std::cout << "Word " << newWord.getEnglish() << " successfully created." << std::endl;
                 newLine.addWord(newWord); // Add Word to Line object
                 }
             }
@@ -82,6 +89,8 @@ bool RhymeEngine::createText(std::ifstream & file, Text & text, std::ifstream & 
         text.addLine(newLine);
         success = true;
         }
+
+    std::cout << "Text file created successfully." << std::endl;
     return success;
 }  // End of File
 
@@ -115,24 +124,26 @@ bool RhymeEngine::findWordInDictionary(const std::string & english, std::ifstrea
     std::vector<std::string> suffixes {"s", "es", "ing", "ed", "ly"};
 
     string line;
-    while (std::getline(dictionary, line)){ // TODO:Binary search instead?
-        stringstream stream("");
-        stream.clear();
-        stream.seekg(0);
+    while (std::getline(dictionary, line)){ // TODO: Implement Binary search
+        line+=" "; //Add whitespace to end of line for parsing
+        std::stringstream stream;
 
         std::string dictionaryWord;
-        char dictionaryPOS;
+        std::string dictionaryPOS;
         std::string dictionaryPronunciation;
 
         stream << line; // Pull first word from line into stream
         stream >> dictionaryWord;
+
+        stream << line;
+        stream >> dictionaryPOS;
+
+        stream << line;
+        stream >> dictionaryPronunciation;
+
         // https://stackoverflow.com/questions/313970/how-to-convert-an-instance-of-stdstring-to-lower-case
         ranges::transform(dictionaryWord, dictionaryWord.begin(),
                           [](unsigned char c){ return std::tolower(c); });
-        stream << line;
-        stream >> dictionaryPOS;
-        stream << line;
-        stream >> dictionaryPronunciation;
 
         if (dictionaryWord == english) { // Perfect match found
             found = true;

@@ -45,7 +45,6 @@ enum PHONEME {
 
     TH,    //[T] sounds like the "th" in "bath"
     DH,    //[D] sounds like the "th" in "that"
-
     FF,    //[f] sounds like the "f" in "elf"
     VV,    //[v] sounds like the "v" in "average"
     SS,    //[s] sounds like the "s" in "sip"
@@ -71,52 +70,61 @@ enum PHONEME {
     RA,    //[R] sounds like the "r" in "rojo"
     };
 
-const std::unordered_map<char, PHONEME> charToPhone = { //TODO: Reorganize to same order as enums
+const std::unordered_map<char, PHONEME> charToPhone = {
     {'-', EH},
+
     {'A', AA},
     {'E', EE},
     {'i', II},
     {'u', UU},
+
     {'&', AH},
-    {'@', UH},
-    {'^', UE},
+    {'^', UH},
     {'@', UR},
     {'I', IH},
     {'U', UE},
+
     {'y', EU},
     {'Y', YU},
     {'O', AW},
+
     {'1', AI},
     {'2', EI},
     {'3', OI},
     {'4', AU},
     {'5', OU},
     {'6', EY},
+
     {'b', BB},
     {'d', DD},
     {'p', PP},
     {'t', TT},
     {'g', GG},
     {'k', KK},
+
     {'T', TH},
     {'D', DH},
     {'f', FF},
     {'v', VV},
     {'s', SS},
     {'z', ZZ},
+
     {'S', SH},
     {'Z', ZH},
     {'J', DJ},
     {'C', CH},
+
     {'h', HH},
     {'x', XH},
     {'w', WW},
     {'W', HW},
+
     {'j', JJ},
     {'l', LL},
     {'m', MM},
     {'n', NN},
     {'N', NG},
+
     {'r', RR},
     {'R', RA}
 };

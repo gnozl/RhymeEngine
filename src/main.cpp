@@ -23,9 +23,6 @@ int main()
 #ifdef _WIN32
     activateVirtualTerminal();
 #endif
-    //TODO: Ask user for text file name
-    //TODO: Load text file
-    //TODO: Parse text file into Text, Line, Word objects
     //TODO: Find rhymes inside text / end of lines
     //TODO: Print out the text, with rhymes highlighted
 
