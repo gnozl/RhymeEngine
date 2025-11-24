@@ -28,7 +28,7 @@ void RhymeEngine::run() {
 }
 
 void RhymeEngine::loadDictionary(std::ifstream & file) {
-    file.open("../include/dict.txt");
+    file.open("../include/test_dict.txt");
     if (!file.is_open()) {
         throw std::runtime_error("Unable to open dictionary file.");
     }
@@ -102,16 +102,30 @@ bool RhymeEngine::findWordInDictionary(const std::string & english, std::ifstrea
     std::string dictionaryWord;
     stringstream stream("");
     string line;
+    //TODO: Remove test counter
+    int counter = 0;
     while (dictionaryWord != english){ // TODO:Binary search instead?
+        counter++;
         stream.clear();
+        stream.seekg(0);
+        line = "";
+        dictionaryWord = "";
+
         if (!std::getline(dictionary, line)) { // Returns false at End of File ;
-            std::cout << "Unable to find word" << english << " in dictionary." << std::endl;
+            std::cout << "Unable to find word " << english << " in dictionary. Searched " << counter << " lines." << std::endl;
+            // Move the read pointer to the beginning of the file
+            dictionary.clear();
+            dictionary.seekg(0);
             return false; // Could not find word in dictionary
         }
         stream << line; // Pull first word from line into stream
         stream >> dictionaryWord;
+        std::cout << "Comparing " << english << " to " << dictionaryWord << std::endl;
     }
     dictionaryEntry = line;
+    // Move the read pointer to the beginning of the file
+    dictionary.clear();
+    dictionary.seekg(0);
     return true;
 }
 

@@ -15,7 +15,6 @@ add_library(RhymeEngine
         include/PartsOfSpeech.h
         include/RhymeEngine.h
         src/RhymeEngine.cpp
-        include/dict.txt
         src/Text.cpp
         src/Line.cpp
 )
