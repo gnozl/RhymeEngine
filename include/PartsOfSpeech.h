@@ -22,7 +22,6 @@
 */
 
 enum POS {
-    NO_POS,
     NOUN,
     HYPHENATED,
     PLURAL,
@@ -35,7 +34,8 @@ enum POS {
     INTERJECTION,
     PREPOSITION,
     CONJUNCTION,
-    DETERMINER
+    DETERMINER,
+    NO_POS,
 };
 
 const std::unordered_map<char, POS> charToPOS = {

@@ -8,9 +8,8 @@
 
 
 enum PHONEME {
-
     // VOWELS
-    EH = 1,    //[-] schwa / lazy vowel
+    EH,    //[-] schwa / lazy vowel
 
     AA,    //[A] sounds like the "a" in far, bob
     EE,    //[E] sounds like the "e" in "red"
@@ -36,7 +35,7 @@ enum PHONEME {
     // END OF VOWELS
 
     // CONSONANTS
-    BB = 20,    //[b] sounds like the "b" in "nab"
+    BB,    //[b] sounds like the "b" in "nab"
     DD,    //[d] sounds like the "d" in "pod"
     PP,    //[p] sounds like the "p" in "imp"
     TT,    //[t] sounds like the "t" in "tap"
@@ -68,6 +67,8 @@ enum PHONEME {
 
     RR,    //[r] sounds like the "r" in "red"
     RA,    //[R] sounds like the "r" in "rojo"
+
+    NULL_PHONEME // DO NOT USE
     };
 
 const std::unordered_map<char, PHONEME> charToPhone = {

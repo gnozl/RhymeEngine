@@ -6,7 +6,7 @@
 
 
 bool Word::isVowel(const PHONEME phone) {
-    if (phone > 0 && phone < 20) return true;
+    if (phone > 0 && phone < BB) return true;
     return false;
 }
 
@@ -38,14 +38,6 @@ int Word::getSyllables() const {
         }
     }
     return syllables;
-}
-
-void Word::printPronunciation() const {
-    std::cout << pronunciation;
-}
-
-void Word::printEnglish() const {
-    std::cout << english << std::endl;
 }
 
 void Word::setEnglish(std::string english) {

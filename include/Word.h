@@ -25,28 +25,29 @@ private:
     static bool isVowel(PHONEME phone);
 
 public:
-    Word();
+    Word(); // TODO: Remove Default
+    //Word(std::string english) //TODO: Words should create themselves, not RhymeEngine
     Word(std::string english, POS partOfSpeech, std::string pronunciation);
     ~Word();
 
-    [[nodiscard]] int getSyllables() const;
-    [[nodiscard]] std::string getEnglish() {return english;};
-    [[nodiscard]] std::string getPronunciation() {return pronunciation;};
-    [[nodiscard]] std::vector<PHONEME> getPhonemes() const {return phonemes;};
-    [[nodiscard]] int phonemeCount() const {return phonemes.size();};
-    [[nodiscard]] COLOR getColor() const {return color;};
+    // Simple Getters
+    [[nodiscard]] std::string getEnglish() const {return english;};
     [[nodiscard]] POS getPartOfSpeech() const {return partOfSpeech;};
+    [[nodiscard]] std::string getPronunciation() const {return pronunciation;};
 
-    void printPronunciation() const;
-    void printEnglish() const;
+    [[nodiscard]] std::vector<PHONEME> getPhonemes() const {return phonemes;};
+    [[nodiscard]] COLOR getColor() const {return color;};
+
+    //
+    [[nodiscard]] int getSyllables() const;
+    [[nodiscard]] int phonemeCount() const {return phonemes.size();};
 
     void setEnglish(std::string english);
     void setPartOfSpeech(POS partOfSpeech);
     void setPartOfSpeech(char partOfSpeech);
-
     void setPronunciation(std::string& pronunciation);
-
     void setColor(COLOR color);
+
     void addPhoneme(PHONEME phoneme);
     void printInColor() const;
 
