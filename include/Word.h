@@ -26,6 +26,7 @@ private:
 
 public:
     Word(); // TODO: Remove Default
+    Word(const std::string & english, const std::unordered_map<std::string, std::string>& dictionary);
     //Word(std::string english) //TODO: Words should create themselves, not RhymeEngine
     Word(std::string english, POS partOfSpeech, std::string pronunciation);
     ~Word();

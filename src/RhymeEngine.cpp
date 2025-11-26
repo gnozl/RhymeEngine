@@ -7,44 +7,53 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include <cctype>
 using namespace std;
 
-RhymeEngine::RhymeEngine() = default;
+RhymeEngine::RhymeEngine() {
+    this->rhymeDictionary = createDictionary();
+};
 
 RhymeEngine::~RhymeEngine() = default;
 
 void RhymeEngine::run() {
     //std::cout << "RhymeEngine::run()" << std::endl;
 
-    std::ifstream dictionaryFile;
-    loadDictionary(dictionaryFile);
-
-    std::ifstream textFile;
-    if (!openFile(textFile)) {
+    std::ifstream textFileStream;
+    if (!openFile(textFileStream)) {
         return;
     }
 
-    Text text;
-    if (!createText(textFile, text, dictionaryFile)) {
-        std::cout << "Text file creation failed." << std::endl;
-        return;
-    }
+    Text text(textFileStream, rhymeDictionary);
 
     text.print();
     text.printIPA();
 
-    textFile.close();
-    dictionaryFile.close();
+    textFileStream.close();
 }
 
-void RhymeEngine::loadDictionary(std::ifstream & file) {
-    //std::cout << "RhymeEngine::loadDictionary()" << std::endl;
-
-    file.open("../include/test_dict.txt");
-    if (!file.is_open()) {
+unordered_map<std::string, pair<char, std::string>> RhymeEngine::createDictionary() {
+    std::ifstream dictionaryFile;
+    dictionaryFile.open("../include/test_dict.txt"); //TODO: Replace this with full dictionary
+    if (!dictionaryFile.is_open()) {
         throw std::runtime_error("Unable to open dictionary file.");
     }
+    unordered_map<std::string, pair<char, std::string>> dictionary;
+    // {"Example" : {'N', "Ig'z&mp^l"}
+
+    std::string nextLine;
+    std::string firstWord;
+    while (std::getline(dictionaryFile, nextLine)) {
+        stringstream stream(nextLine);
+        getline(stream, firstWord, ' ');
+        ranges::transform(firstWord, firstWord.begin(), ::tolower); // all keys should be stored in lowercase
+        std::string first;
+        std::string second;
+        getline(stream, first, ' ');
+        getline(stream, second, ' ');
+        dictionary[firstWord] = nextLine; //  Key : Value pair into dictionary
+    }
+    dictionaryFile.close();
+    return dictionary;
 }
 
 bool RhymeEngine::openFile(std::ifstream & file) {
@@ -69,7 +78,6 @@ bool RhymeEngine::openFile(std::ifstream & file) {
 bool RhymeEngine::createText(std::ifstream & file, Text & text, std::ifstream & dictionary) {
     //std::cout << "RhymeEngine::createText()" << std::endl;
 
-    bool success = false;
     std::string nextLineOfDictionary;
     while (std::getline(file, nextLineOfDictionary)) { // std::getline returns false at End of File
         Line newLine{};
@@ -77,30 +85,28 @@ bool RhymeEngine::createText(std::ifstream & file, Text & text, std::ifstream & 
         stringstream stream(nextLineOfDictionary); // each line of dict.txt formatted as "xxxxx y zzzzz" X is english spelling, Y is a single char part of speech, Z is pronunciation
         while (stream >> nextWordString) { // Returns false at end of stream
             Word newWord;
-            if (!createWord(nextWordString, newWord, dictionary)) { //
+            try{createWord(nextWordString, dictionary);}
+            catch (std::runtime_error & e) {
                 std::cout << "Failed to create word: " + nextWordString << std::endl;
+                return false;
             }
-            else {
-                //std::cout << "Word " << newWord.getEnglish() << " successfully created." << std::endl;
-                newLine.addWord(newWord); // Add Word to Line object
-                }
-            }
+            newWord = createWord(nextWordString, dictionary);
+            newLine.addWord(newWord); // Add Word to Line object
+        }
         // End of line stream
         text.addLine(newLine);
-        success = true;
-        }
-
+    }
     std::cout << "Text file created successfully." << std::endl;
-    return success;
+    return true;
 }  // End of File
 
-bool RhymeEngine::createWord(std::string &english, Word &word, std::ifstream &dictionary) {
+Word RhymeEngine::createWord(std::string &english, std::ifstream &dictionary) {
 
     std::string dictionaryEntry;
     std::stringstream stream("");
 
     if (!findWordInDictionary(english, dictionary, dictionaryEntry)) {
-        return false;
+        throw std::runtime_error("Failed to find english word in dictionary.");
     }
     stream << dictionaryEntry;
     stream >> english;
@@ -111,11 +117,42 @@ bool RhymeEngine::createWord(std::string &english, Word &word, std::ifstream &di
     std::string pronunciation;
     stream >> pronunciation;
 
+    Word word;
     word.setEnglish(english);
     word.setPronunciation(pronunciation);
     word.setPartOfSpeech(pos);
 
-    return true;
+    return word;
+}
+
+std::string RhymeEngine::checkForSuffixes(const std::string &key) const {
+    std::vector<std::string> suffixes {"s", "es", "ing", "ed", "ly", "y", "ies", "ied"};
+}
+
+std::string RhymeEngine::getDictionaryEntry(const std::string & key) const {
+    std::string lowercaseKey = key;
+    ranges::transform(lowercaseKey, lowercaseKey.begin(), ::tolower);
+
+    bool found = false;
+    std::string dictionaryEntry;
+
+    if (rhymeDictionary.contains(lowercaseKey)) {
+        dictionaryEntry = rhymeDictionary.at(lowercaseKey);
+        found = true;
+    }
+
+    if (!found) {
+        std::vector<std::string> suffixes {"s", "es", "ing", "ed", "ly"};
+        dictionaryEntry = checkForSuffixes(lowercaseKey);
+        if (!dictionaryEntry.empty()) {
+            found = true;
+        }
+    }
+
+    //TODO: Ask user to manually input dictionary entries / user-created dictionary
+
+    if (found) {return dictionaryEntry;}
+    else {return "";} // Return empty string as failure state
 }
 
 bool RhymeEngine::findWordInDictionary(const std::string & english, std::ifstream & dictionary, std::string & dictionaryEntry) {

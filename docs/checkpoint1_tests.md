@@ -1,21 +1,32 @@
-# Checkpoint 1 Test Cases
-## Feature: Store Text as Objects
-### Test Setup
-- Test file:
-  `tests/test_text_storage.cpp
-  `
-- Build system: CMake with CTest
-- Run command:
+# Checkpoint 1 Test Cases  
+## Feature: Store Text as Objects  
+### Test Setup  
+
+**Test files:**   
+ `tests/test_word.cpp`  
+ `tests/test_line.cpp`  
+ `tests/test_text.cpp`
+ 
+Build system:  
+`cmake`   
+
+Run command:  
   `
   ctest --verbose
   `
-### Test 1: Normal Operation
+
+### Test 1: Word
 -
 **What it tests**:   
 - Stores an input word into a Word object 
+- Converts the input into the correct phonemes
+- Prints the Word object correctly
+- Counts the syllables in the word
 
 **Expected result**:  
-- Word is created using pronunciations in dict.txt
+- Word is created from the text using constructor
+- Word is printed using std::cout << override
+- Syllables are counted using Word::isVowel()
 
 **Result**: ✅ Pass
 

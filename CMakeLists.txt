@@ -26,7 +26,7 @@ link_libraries(RhymeEngine)
 add_executable(rhyme_engine src/main.cpp src/main.cpp)
 
 # Tests
-add_executable(test_word_make tests/test_word_make.cpp)
+add_executable(test_word_make tests/test_word.cpp)
 add_executable(test_enums tests/test_enums.cpp)
 #add_executable(test_dictionary tests/test_dictionary.cpp)
 

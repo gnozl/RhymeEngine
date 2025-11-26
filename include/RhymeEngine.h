@@ -21,12 +21,12 @@ class RhymeEngine {
 private:
     // sequences of phonemes to check rhymes against, and their associated color
     std::vector<std::tuple<std::string, COLOR>> rhymeColors;
-
     std::vector<int> syllableArray;
     std::vector<int> rhymeArray;
+    std::unordered_map<std::string, std::string> rhymeDictionary;
 
-    // Opens dict.txt in filestream
-    static void loadDictionary(std::ifstream & file);
+    // Turns dict.txt into an unordered map
+    static std::unordered_map<std::string, std::pair<char, std::string>> createDictionary();
     // Asks user for file to open; Returns true is successful
     static bool openFile(std::ifstream & file);
 
@@ -40,7 +40,11 @@ public:
     static bool createText(std::ifstream &file, Text &text, std::ifstream &dictionary);
 
     // Edits Word object using data from dictionary
-    static bool createWord(std::string &english, Word &word, std::ifstream &dictionary);
+    static Word createWord(std::string &english, std::ifstream &dictionary);
+
+    [[nodiscard]] std::string checkForSuffixes(const std::string & key) const;
+
+    [[nodiscard]] std::string getDictionaryEntry(const std::string &key) const;
 
     /* Finds exact match of word in dict.txt, inputs whole line into dictionaryEntry
      Returns false if no match found

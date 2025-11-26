@@ -4,6 +4,8 @@
 
 #include "../include/Word.h"
 
+#include <sstream>
+
 
 bool Word::isVowel(const PHONEME phone) {
     if (phone > 0 && phone < BB) return true;
@@ -50,7 +52,7 @@ void Word::setPartOfSpeech(POS partOfSpeech) {
 
 void Word::setPartOfSpeech(char partOfSpeech) {
     if (!charToPOS.contains(partOfSpeech)) {
-        return;
+        throw std::invalid_argument("PartOfSpeech does not exist");
     }
     else {
         this->partOfSpeech = charToPOS.at(partOfSpeech);

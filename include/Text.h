@@ -18,7 +18,7 @@ class Text {
     public:
 
     Text();
-    Text(std::string title, std::string & fileName);
+    Text(std::string & fileName);
     ~Text();
 
     [[nodiscard]] int getNumberOfLines() const {return (lines.size());}

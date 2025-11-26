@@ -10,8 +10,8 @@ Text::Text() {
     title = "";
 }
 
-Text::Text(std::string title, std::string & fileName) {
-    this->title = std::move(title);
+Text::Text(std::ifstream & fileStream) {
+
 }
 
 Text::~Text() = default;
