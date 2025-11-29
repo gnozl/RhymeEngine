@@ -8,9 +8,7 @@
 #include <sstream>
 #include <algorithm>
 
-RhymeEngine::RhymeEngine(const std::string& dictionaryFilePath) {
-    rhymeDictionary = createDictionary(dictionaryFilePath);
-};
+RhymeEngine::RhymeEngine() = default;
 
 RhymeEngine::~RhymeEngine() = default;
 
@@ -30,13 +28,13 @@ void RhymeEngine::run() {
     textFileStream.close();
 }
 
-unordered_map<std::string, pair<std::string, std::string>> RhymeEngine::createDictionary(const std::string & dictionaryFilePath) {
+void RhymeEngine::createDictionary(const std::string & dictionaryFilePath) {
     std::ifstream dictionaryFile;
     dictionaryFile.open(dictionaryFilePath);
     if (!dictionaryFile.is_open()) {
         throw std::runtime_error("Unable to open dictionary file.");
     }
-    unordered_map<string, pair<string, string>> dictionary;
+    unordered_map<string, pair<char, string>> dictionary;
     int count = 0;
 
     std::string nextLine;
@@ -48,15 +46,16 @@ unordered_map<std::string, pair<std::string, std::string>> RhymeEngine::createDi
         std::string partOfSpeech;
         std::string pronunciation;
         getline(stream, partOfSpeech, ' ');
-        getline(stream, pronunciation, ' ');
-        pair entry = {partOfSpeech, pronunciation};
+        getline(stream, pronunciation, '\r');
+        if (firstWord == "the"){std::cout << "length of pronunciation: " << pronunciation.length() << std::endl;}
+        pair entry = {partOfSpeech[0], pronunciation};
         dictionary.insert({firstWord, entry});
         count++;
     }
     cout << "Created dictionary from " << dictionaryFilePath << " with " << count << " entries." << endl;
 
     dictionaryFile.close();
-    return dictionary;
+    rhymeDictionary = dictionary;
 }
 
 bool RhymeEngine::openFile(std::ifstream & file) {
@@ -84,24 +83,22 @@ Text RhymeEngine::createText(std::ifstream & inputFile) {
     int wordAttempts = 0;
     int wordSuccess = 0;
     std::string nextLineFromInputFile;
-    while (std::getline(inputFile, nextLineFromInputFile)) { // std::getline returns false at End of File
+    while (std::getline(inputFile, nextLineFromInputFile, '\n')) { // std::getline returns false at End of File
         Line newline;
         std::string nextWordString;
         stringstream stream(nextLineFromInputFile);
-        while (std::getline(stream, nextWordString)) { // Returns false at end of stream
-            Word newWord;
+        while (std::getline(stream, nextWordString, ' ')) { // Returns false at end of stream
             wordAttempts++;
             try {
-                newWord = createWord(nextWordString);
+                Word newWord = createWord(nextWordString);
+                newline.addWord(newWord); // Add Word to Line object
                 wordSuccess++;
             }
             catch (std::runtime_error & e) {
                 std::cout << e.what() << std::endl;
-                newWord.setEnglish("????");
-                newWord.setPartOfSpeech(NO_POS);
-                newWord.setPronunciation("");
+                Word newWord("????", NO_POS, "");
+                newline.addWord(newWord); // Add Empty Word to Line object
             }
-            newline.addWord(newWord); // Add Word to Line object
         }
         // End of line stream
         text.addLine(newline);
@@ -111,43 +108,33 @@ Text RhymeEngine::createText(std::ifstream & inputFile) {
 }  // End of File
 
 Word RhymeEngine::createWord(std::string &english) {
+    //cout << "Creating word: " << english << endl;
 
-    pair<string, string> dictionaryEntry = getDictionaryEntry(english);
-    std::stringstream stream(dictionaryEntry.second + " "); //make sure dictionary entry has space at end
+    pair<char, string> dictionaryEntry = getDictionaryEntry(english);
 
-    std::string key;
-    getline(stream, key, ' ');
-
-    std::string pos;
-    getline(stream, pos, ' ');
-
-    std::string pronunciation;
-    getline(stream, pronunciation, ' ');
-
-    Word word;
-    word.setEnglish(english);
-    word.setPronunciation(pronunciation);
-    char posChar = pos[0];
-    word.setPartOfSpeech(posChar);
+    Word word(english, dictionaryEntry.first, dictionaryEntry.second);
 
     return word;
 }
 
-// pair<string,string> RhymeEngine::checkForSuffixes(const std::string &key) {
-//     pair<string, string> dictionaryEntry;
+// TODO: Check for word + suffixes
+// pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) {
+//     pair<char, string> dictionaryEntry;
 //     std::vector<std::string> suffixes {"s", "es", "ing", "ed", "ly", "y", "ies", "ied"};
-//     // TODO: Check for word + suffixes
+//
 //     return dictionaryEntry;
 // }
 
-pair<string, string> RhymeEngine::getDictionaryEntry(const std::string & key) {
+pair<char, string> RhymeEngine::getDictionaryEntry(const std::string & key) {
+    //std::cout << "RhymeEngine::getDictionaryEntry: " << key << std::endl;
     std::string lowercaseKey = key;
     ranges::transform(lowercaseKey, lowercaseKey.begin(), ::tolower);
 
     bool found = false;
-    pair<string, string> dictionaryEntry;
+    pair<char, string> dictionaryEntry;
 
     if (rhymeDictionary.contains(lowercaseKey)) {
+        //std::cout << "Found " << lowercaseKey << " in dictionary." << std::endl;
         dictionaryEntry = rhymeDictionary.at(lowercaseKey);
         found = true;
     }

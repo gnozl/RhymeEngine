@@ -47,7 +47,7 @@ void test_getSyllables(const Word &word) {
     Word testing("testing", VERB, "t/E/stiN");
 
     std::cout << "testing has 2 syllables\n";
-    assert(test.getSyllables() == 2);
+    assert(testing.getSyllables() == 2);
 
     std::cout << "✓ getSyllables() test passed\n";
 }

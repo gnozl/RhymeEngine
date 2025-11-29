@@ -24,31 +24,30 @@ private:
     vector<pair<string, COLOR>> rhymeColors;
     vector<int> syllableArray;
     vector<int> rhymeArray;
-    static unordered_map<string, pair<string, string>> rhymeDictionary;
-
-    // Turns dict.txt into an unordered map - sets up rhymeDictionary member variable
-    static unordered_map<string, pair<string, string>> createDictionary(const string & dictionaryFilePath);
-
+    unordered_map<string, pair<char, string>> rhymeDictionary;
 
 public:
 
-    explicit RhymeEngine(const string& dictionaryFilePath = "../addFilesHere/dict.txt");
+    RhymeEngine();
     ~RhymeEngine();
+
+    // Turns dict.txt into an unordered map - sets up rhymeDictionary member variable
+    void createDictionary(const string& dictionaryFilePath = "../addFilesHere/dict.txt");
 
     void run();
 
     // Asks user for file to open; Returns true if successful
-    static bool openFile(std::ifstream & file);
+    bool openFile(std::ifstream & file);
 
     // Using selected filestream, create Text object, using dictionary; Returns true if successful
-    static Text createText(std::ifstream & inputFile);
+    Text createText(std::ifstream & inputFile);
 
     // Edits Word object using data from dictionary
-    static Word createWord(std::string &english);
+    Word createWord(std::string &english);
 
-    // [[nodiscard]] static pair<string, string> checkForSuffixes(const std::string & key);
+    // [[nodiscard]] static pair<char, string> checkForSuffixes(const std::string & key);
 
-    [[nodiscard]] static pair<string, string> getDictionaryEntry(const std::string &key);
+    [[nodiscard]] pair<char, string> getDictionaryEntry(const std::string &key);
 
     /* Finds exact match of word in dict.txt, inputs whole line into dictionaryEntry
      Returns false if no match found

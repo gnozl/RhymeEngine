@@ -5,6 +5,8 @@
 #include "../include/Word.h"
 
 #include <sstream>
+#include <algorithm>
+#include <utility>
 
 
 bool Word::isVowel(const PHONEME phone) {
@@ -12,10 +14,21 @@ bool Word::isVowel(const PHONEME phone) {
     return false;
 }
 
-Word::Word() {
-    this->english = "";
-    this->partOfSpeech = NO_POS;
-    this->pronunciation = "";
+Word::Word(std::string english, char POS, std::string pronunciation) {
+    this->english = std::move(english);
+    if (!charToPOS.contains(POS)) {
+        throw std::invalid_argument("PartOfSpeech does not exist");
+    }
+    else {
+        this->partOfSpeech = charToPOS.at(POS);
+    }
+    this->pronunciation = std::move(pronunciation);
+    std::erase(this->pronunciation, '/');
+
+    for (char c : this->pronunciation) {
+        if (c == '/' || c == '\'' || c == ',' || c == '_') continue;
+        addPhoneme(charToPhone.at(c));
+    }
 }
 
 Word::Word(std::string english, POS partOfSpeech, std::string pronunciation) {
@@ -23,6 +36,7 @@ Word::Word(std::string english, POS partOfSpeech, std::string pronunciation) {
     this->partOfSpeech = partOfSpeech;
     this->pronunciation = std::move(pronunciation);
     std::erase(this->pronunciation, '/');
+
 
     for (char c : this->pronunciation) {
         if (c == '/' || c == '\'' || c == ',' || c == '_') continue;
@@ -43,6 +57,7 @@ int Word::getSyllables() const {
 }
 
 void Word::setEnglish(std::string english) {
+    std::cout << "setEnglish: " << english << std::endl;
     this->english = std::move(english);
 }
 
@@ -51,6 +66,7 @@ void Word::setPartOfSpeech(POS partOfSpeech) {
 }
 
 void Word::setPartOfSpeech(char partOfSpeech) {
+    std::cout << "setPartOfSpeech: " << partOfSpeech << std::endl;
     if (!charToPOS.contains(partOfSpeech)) {
         throw std::invalid_argument("PartOfSpeech does not exist");
     }
@@ -60,11 +76,18 @@ void Word::setPartOfSpeech(char partOfSpeech) {
 }
 
 void Word::setPronunciation(std::string pronunciation_string) {
+    std::cout << "setPronunciation: " << pronunciation_string << std::endl;
     this->pronunciation = std::move(pronunciation_string);
     std::erase(this->pronunciation, '/');
+    std::erase(this->pronunciation, ' ');
+    std::erase(this->pronunciation, '\n');
+
+    std::cout << this->pronunciation.length() << std::endl;
+    std::cout << "||" << this->pronunciation << "||" << std::endl;
 
     for (char c : this->pronunciation) {
         if (c == '/' || c == '\'' || c == ',' || c == '_') continue;
+        std::cout << "converting: " << c << std::endl;
         addPhoneme(charToPhone.at(c));
     }
 }

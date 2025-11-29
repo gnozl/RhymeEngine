@@ -27,6 +27,7 @@ int main()
     //TODO: Print out the text, with rhymes highlighted
 
     RhymeEngine engine;
+    engine.createDictionary();
     engine.run();
 
     return 0;

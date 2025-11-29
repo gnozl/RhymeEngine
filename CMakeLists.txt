@@ -25,13 +25,14 @@ target_link_libraries(rhyme_engine PRIVATE RhymeEngine)
 
 # Tests
 add_executable(test_word_make tests/test_word.cpp)
-target_link_libraries(test_word_make PRIVATE MyLibrary)
+target_link_libraries(test_word_make PRIVATE RhymeEngine)
 add_executable(test_enums tests/test_enums.cpp)
-target_link_libraries(test_enums PRIVATE MyLibrary)
-#add_executable(test_dictionary tests/test_dictionary.cpp)
+target_link_libraries(test_enums PRIVATE RhymeEngine)
+add_executable(test_dictionary tests/test_dictionary.cpp)
+target_link_libraries(test_dictionary PRIVATE RhymeEngine)
 
 # Register tests with CTest
 add_test(NAME EnumTest COMMAND test_enums)
 add_test(NAME WordMakeTest COMMAND test_word_make)
-#add_test(NAME DictionaryTest COMMAND test_dictionary)
+add_test(NAME DictionaryTest COMMAND test_dictionary)
 
