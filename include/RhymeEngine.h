@@ -46,7 +46,7 @@ public:
     // Edits Word object using data from dictionary
     static Word createWord(std::string &english);
 
-    [[nodiscard]] static pair<string, string> checkForSuffixes(const std::string & key);
+    // [[nodiscard]] static pair<string, string> checkForSuffixes(const std::string & key);
 
     [[nodiscard]] static pair<string, string> getDictionaryEntry(const std::string &key);
 
@@ -55,9 +55,9 @@ public:
      */
     //static std::string findWordInDictionary(const std::string & english);
 
-    //TODO: Implement these next
-    static std::vector<std::string> findRhymes(Word & word);
-    static bool isRhyme(Word & word1, Word & word2);
+    // //TODO: Implement these next
+    // static std::vector<std::string> findRhymes(Word & word);
+    // static bool isRhyme(Word & word1, Word & word2);
 
 
     // TODO: Future Features

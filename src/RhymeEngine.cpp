@@ -133,12 +133,12 @@ Word RhymeEngine::createWord(std::string &english) {
     return word;
 }
 
-pair<string,string> RhymeEngine::checkForSuffixes(const std::string &key) {
-    pair<string, string> dictionaryEntry;
-    std::vector<std::string> suffixes {"s", "es", "ing", "ed", "ly", "y", "ies", "ied"};
-    // TODO: Check for word + suffixes
-    return dictionaryEntry;
-}
+// pair<string,string> RhymeEngine::checkForSuffixes(const std::string &key) {
+//     pair<string, string> dictionaryEntry;
+//     std::vector<std::string> suffixes {"s", "es", "ing", "ed", "ly", "y", "ies", "ied"};
+//     // TODO: Check for word + suffixes
+//     return dictionaryEntry;
+// }
 
 pair<string, string> RhymeEngine::getDictionaryEntry(const std::string & key) {
     std::string lowercaseKey = key;
@@ -152,12 +152,12 @@ pair<string, string> RhymeEngine::getDictionaryEntry(const std::string & key) {
         found = true;
     }
 
-    if (!found) {
-        dictionaryEntry = checkForSuffixes(lowercaseKey);
-        if (!dictionaryEntry.second.empty()) {
-            found = true;
-        }
-    }
+    // if (!found) {
+    //     dictionaryEntry = checkForSuffixes(lowercaseKey);
+    //     if (!dictionaryEntry.second.empty()) {
+    //         found = true;
+    //     }
+    // }
 
     // if (!found) {
     //     //TODO: Ask user to manually input dictionary entries / user-created dictionary
@@ -263,14 +263,14 @@ pair<string, string> RhymeEngine::getDictionaryEntry(const std::string & key) {
 //     return false; // Could not find word in dictionary
 // }
 
-std::vector<std::string> RhymeEngine::findRhymes(Word & word) {
-    std::vector<std::string> result;
-    //TODO: FIND RHYMES
-    return result;
-}
-
-bool RhymeEngine::isRhyme(Word & word1, Word & word2) {
-    bool result = false;
-    //TODO: Does it rhyme?
-    return result;
-}
+// std::vector<std::string> RhymeEngine::findRhymes(Word & word) {
+//     std::vector<std::string> result;
+//     //TODO: FIND RHYMES
+//     return result;
+// }
+//
+// bool RhymeEngine::isRhyme(Word & word1, Word & word2) {
+//     bool result = false;
+//     //TODO: Does it rhyme?
+//     return result;
+// }

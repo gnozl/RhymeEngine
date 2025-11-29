@@ -19,15 +19,15 @@ add_library(RhymeEngine
         src/Line.cpp
 )
 
-#applies to EVERY exe
-link_libraries(RhymeEngine)
-
 # main
-add_executable(rhyme_engine src/main.cpp src/main.cpp)
+add_executable(rhyme_engine src/main.cpp)
+target_link_libraries(rhyme_engine PRIVATE RhymeEngine)
 
 # Tests
 add_executable(test_word_make tests/test_word.cpp)
+target_link_libraries(test_word_make PRIVATE MyLibrary)
 add_executable(test_enums tests/test_enums.cpp)
+target_link_libraries(test_enums PRIVATE MyLibrary)
 #add_executable(test_dictionary tests/test_dictionary.cpp)
 
 # Register tests with CTest
