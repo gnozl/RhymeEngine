@@ -35,7 +35,7 @@ public:
     explicit RhymeEngine(const string& dictionaryFilePath = "../addFilesHere/dict.txt");
     ~RhymeEngine();
 
-    static void run();
+    void run();
 
     // Asks user for file to open; Returns true if successful
     static bool openFile(std::ifstream & file);
