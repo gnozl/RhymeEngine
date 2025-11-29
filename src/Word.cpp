@@ -56,13 +56,13 @@ int Word::getSyllables() const {
     return syllables;
 }
 
-void Word::setEnglish(std::string english) {
-    std::cout << "setEnglish: " << english << std::endl;
-    this->english = std::move(english);
+void Word::setEnglish(std::string inputenglish) {
+    std::cout << "setEnglish: " << inputenglish << std::endl;
+    this->english = std::move(inputenglish);
 }
 
-void Word::setPartOfSpeech(POS partOfSpeech) {
-    this->partOfSpeech = partOfSpeech;
+void Word::setPartOfSpeech(POS inputpartOfSpeech) {
+    this->partOfSpeech = inputpartOfSpeech;
 }
 
 void Word::setPartOfSpeech(char partOfSpeech) {

@@ -8,15 +8,15 @@ enable_testing()
 
 #Core Rhyme Engine Library
 add_library(RhymeEngine
-        include/Word.h
-        include/phonemes.h
-        include/colors.h
-        src/Word.cpp
-        include/PartsOfSpeech.h
-        include/RhymeEngine.h
         src/RhymeEngine.cpp
+        src/Word.cpp
         src/Text.cpp
         src/Line.cpp
+)
+
+target_include_directories(RhymeEngine
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 # main

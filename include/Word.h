@@ -26,7 +26,8 @@ private:
 
 public:
     Word(std::string english, char POS, std::string pronunciation);
-    Word(const std::string & english, const std::unordered_map<std::string, std::string>& dictionary);
+    //TODO: implement constructor
+    //Word(const std::string & english, const std::unordered_map<std::string, std::string>& dictionary);
     Word(std::string english, POS partOfSpeech, std::string pronunciation);
     ~Word();
 

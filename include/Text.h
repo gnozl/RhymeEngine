@@ -17,7 +17,8 @@ class Text {
     public:
 
     Text();
-    explicit Text(std::vector<Line> lines);
+    //TODO: Implement constructor
+    //explicit Text(std::vector<Line> lines);
     ~Text();
 
     [[nodiscard]] int getNumberOfLines() const {return (lines.size());}
