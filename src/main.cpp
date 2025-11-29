@@ -26,7 +26,8 @@ int main()
     //TODO: Find rhymes inside text / end of lines
     //TODO: Print out the text, with rhymes highlighted
 
-    RhymeEngine::run();
+    RhymeEngine engine;
+    engine.run();
 
     return 0;
 }

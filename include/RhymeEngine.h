@@ -7,6 +7,7 @@
 #include <string>
 
 #include "Text.h"
+using namespace std;
 
 /* Rhyme Engine
  * This handles the text submitted by the user
@@ -20,37 +21,41 @@
 class RhymeEngine {
 private:
     // sequences of phonemes to check rhymes against, and their associated color
-    std::vector<std::tuple<std::string, COLOR>> rhymeColors;
-    std::vector<int> syllableArray;
-    std::vector<int> rhymeArray;
-    std::unordered_map<std::string, std::string> rhymeDictionary;
+    vector<pair<string, COLOR>> rhymeColors;
+    vector<int> syllableArray;
+    vector<int> rhymeArray;
+    static unordered_map<string, pair<string, string>> rhymeDictionary;
 
-    // Turns dict.txt into an unordered map
-    static std::unordered_map<std::string, std::pair<char, std::string>> createDictionary();
-    // Asks user for file to open; Returns true is successful
-    static bool openFile(std::ifstream & file);
+    // Turns dict.txt into an unordered map - sets up rhymeDictionary member variable
+    static unordered_map<string, pair<string, string>> createDictionary(const string & dictionaryFilePath);
+
 
 public:
-    RhymeEngine();
+
+    explicit RhymeEngine(const string& dictionaryFilePath = "../addFilesHere/dict.txt");
     ~RhymeEngine();
 
     static void run();
 
+    // Asks user for file to open; Returns true if successful
+    static bool openFile(std::ifstream & file);
+
     // Using selected filestream, create Text object, using dictionary; Returns true if successful
-    static bool createText(std::ifstream &file, Text &text, std::ifstream &dictionary);
+    static Text createText(std::ifstream & inputFile);
 
     // Edits Word object using data from dictionary
-    static Word createWord(std::string &english, std::ifstream &dictionary);
+    static Word createWord(std::string &english);
 
-    [[nodiscard]] std::string checkForSuffixes(const std::string & key) const;
+    [[nodiscard]] static pair<string, string> checkForSuffixes(const std::string & key);
 
-    [[nodiscard]] std::string getDictionaryEntry(const std::string &key) const;
+    [[nodiscard]] static pair<string, string> getDictionaryEntry(const std::string &key);
 
     /* Finds exact match of word in dict.txt, inputs whole line into dictionaryEntry
      Returns false if no match found
      */
-    static bool findWordInDictionary(const std::string & english, std::ifstream & dictionary, std::string & dictionaryEntry);
+    //static std::string findWordInDictionary(const std::string & english);
 
+    //TODO: Implement these next
     static std::vector<std::string> findRhymes(Word & word);
     static bool isRhyme(Word & word1, Word & word2);
 

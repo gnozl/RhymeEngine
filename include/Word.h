@@ -46,7 +46,7 @@ public:
     void setEnglish(std::string english);
     void setPartOfSpeech(POS partOfSpeech);
     void setPartOfSpeech(char partOfSpeech);
-    void setPronunciation(std::string& pronunciation);
+    void setPronunciation(std::string pronunciation);
     void setColor(COLOR color);
 
     void addPhoneme(PHONEME phoneme);

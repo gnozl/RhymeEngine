@@ -6,13 +6,7 @@
 #include <utility>
 #include "../include/Text.h"
 
-Text::Text() {
-    title = "";
-}
-
-Text::Text(std::ifstream & fileStream) {
-
-}
+Text::Text() = default;
 
 Text::~Text() = default;
 

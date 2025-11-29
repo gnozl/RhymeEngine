@@ -10,7 +10,6 @@
 
 class Text {
     private:
-    std::string title;
     std::string rhymePattern;
 
     std::vector<Line> lines;
@@ -18,7 +17,7 @@ class Text {
     public:
 
     Text();
-    Text(std::string & fileName);
+    explicit Text(std::vector<Line> lines);
     ~Text();
 
     [[nodiscard]] int getNumberOfLines() const {return (lines.size());}

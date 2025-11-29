@@ -59,7 +59,7 @@ void Word::setPartOfSpeech(char partOfSpeech) {
     }
 }
 
-void Word::setPronunciation(std::string& pronunciation_string) {
+void Word::setPronunciation(std::string pronunciation_string) {
     this->pronunciation = std::move(pronunciation_string);
     std::erase(this->pronunciation, '/');
 
