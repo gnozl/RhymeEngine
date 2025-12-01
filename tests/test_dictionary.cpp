@@ -58,7 +58,7 @@ void test_get_dictionary_entry() {
     std::cout << "== GET DICTIONARY ENTRY TEST ==" << std::endl;
 
     RhymeEngine rhymeEngine;
-    rhymeEngine.createDictionary("../addFilesHere/test_dict.txt");
+    rhymeEngine.createDictionary();
     std::string test_word = "the";
 
     pair<char,string> test = rhymeEngine.getDictionaryEntry(test_word);
@@ -79,8 +79,14 @@ void test_get_dictionary_entry() {
 int main() {
     std::cout << "== TESTING DICTIONARY FUNCTIONALITY ==" << std::endl;
 
-    test_get_dictionary_entry();
-    test_suffix();
+    try {
+        test_get_dictionary_entry();
+        test_suffix();
+    }
+    catch (const std::exception& e) {
+        std::cerr << "\n❌ Test failed with exception: " << e.what() << "\n";
+        return 1;
+    }
 
     return 0;
 }

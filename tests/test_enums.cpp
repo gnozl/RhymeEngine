@@ -56,8 +56,14 @@ void test_partsOfSpeech() {
 
 int main() {
     std::cout << "== ENUM COMPLETENESS TEST ==" << std::endl;
-    test_Phonemes();
-    test_partsOfSpeech();
+    try{
+        test_Phonemes();
+        test_partsOfSpeech();
+    }
+    catch (const std::exception& e) {
+        std::cerr << "\n❌ Test failed with exception: " << e.what() << "\n";
+        return 1;
+    }
 
     return 0;
 }

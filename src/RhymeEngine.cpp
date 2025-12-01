@@ -14,12 +14,13 @@ RhymeEngine::~RhymeEngine() = default;
 
 void RhymeEngine::runRhymeEngine(std::string textFile) {
     std::cout << "Welcome to RhymeEngine!" << std::endl;
-    if (textFile == " ") {
+    string fileToOpen = textFile;
+    if (textFile == "default") {
         std::cout << "Which .txt file would you like to open? ";
-        std::getline(std::cin, textFile);
-    }
+        std::getline(std::cin, fileToOpen);
+    } else {fileToOpen = textFile;}
     std::ifstream textFileStream;
-    if (!openTextFile(textFileStream, textFile)) {
+    if (!openTextFile(textFileStream, fileToOpen)) {
         return;
     }
 
@@ -83,14 +84,17 @@ Text RhymeEngine::createText(std::ifstream & inputFile) {
     int wordAttempts = 0;
     int wordSuccess = 0;
     std::string nextLineFromInputFile;
+
     while (std::getline(inputFile, nextLineFromInputFile, '\n')) { // std::getline returns false at End of File
         Line newline;
-        std::string nextWordString;
-        for (char16_t c : {u'—', u'-', u'/'}) { // Replace certain characters with spaces
-            std::replace(nextWordString.begin(), nextWordString.end(), c, u' ');
+
+        for (char c : { u'-', u'/'}) { // Replace certain characters with spaces
+            std::replace(nextLineFromInputFile.begin(), nextLineFromInputFile.end(), c, ' ');
         }
         stringstream stream(nextLineFromInputFile);
         stream >> std::ws; // clear all leading whitespace so getline doesnt grab empty space
+
+        std::string nextWordString;
         while (std::getline(stream, nextWordString, ' ')) { // Returns false at end of stream
             if (nextWordString == " "){continue;}
             wordAttempts++;

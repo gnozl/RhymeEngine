@@ -42,7 +42,11 @@ void Text::printIPA() {
     //std::cout << "Text::printIPA()" << std::endl;
     for (Line line : lines) {
         for (const Word& word : line.getWords()) {
-            std::cout << word.getPronunciation() << " ";
+            if (word.getPronunciation() == "")
+                {std::cout << "???" << " ";}
+            else {
+                std::cout << word.getPronunciation() << " ";
+            }
         }
         std::cout << std::endl;
     }

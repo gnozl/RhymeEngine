@@ -65,11 +65,15 @@ void test_addPhonemes(Word &word) {
 
 int main() {
     std::cout << "== TESTING WORD.CPP ==\n";
-
+    try{
     Word word = test_make_word();
     test_cout_operator_overload(word);
     test_getSyllables(word);
     test_addPhonemes(word);
-
+    }
+    catch (const std::exception& e) {
+        std::cerr << "\n❌ Test failed with exception: " << e.what() << "\n";
+        return 1;
+    }
     return 0;
 }

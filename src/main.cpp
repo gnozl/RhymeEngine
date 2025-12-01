@@ -28,7 +28,7 @@ int main()
 
     RhymeEngine engine;
     engine.createDictionary();
-    engine.runRhymeEngine("test/test1");
+    engine.runRhymeEngine();
 
     return 0;
 }
