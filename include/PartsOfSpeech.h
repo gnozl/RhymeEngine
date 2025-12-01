@@ -18,11 +18,12 @@
 | !      | Interjection           |
 | P      | Preposition            |
 | C      | Conjunction            |
-| D      | Quantifier / Qualifier |
+| D      | Determiner             |
 */
 
 enum POS {
     NOUN,
+    HYPHENATED,
     PLURAL,
     PRONOUN,
     ADJECTIVE,
@@ -33,7 +34,24 @@ enum POS {
     INTERJECTION,
     PREPOSITION,
     CONJUNCTION,
-    DETERMINER
+    DETERMINER,
+    NO_POS,
+};
+
+const std::unordered_map<char, POS> charToPOS = {
+    {'N', NOUN},
+    {'h', HYPHENATED},
+    {'p', PLURAL},
+    {'r', PRONOUN},
+    {'A', ADJECTIVE},
+    {'V', VERB},
+    {'v', ADVERB},
+    {'i', INTRANSITIVE},
+    {'t', TRANSITIVE},
+    {'!', INTERJECTION},
+    {'P', PREPOSITION},
+    {'C', CONJUNCTION},
+    {'D', DETERMINER}
 };
 
 #endif //RHYMEENGINE_PARTSOFSPEECH_H

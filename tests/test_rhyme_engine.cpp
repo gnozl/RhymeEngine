@@ -1,53 +1,33 @@
 //
-// Created by Gerardo Gonzalez on 11/16/25.
+// Created by Gerardo Gonzalez on 12/1/25.
 //
 
-#include <iostream>
-#include "../include/Word.h"
-#include <cassert>
 
-void test_make_word() {
-    Word word("examination", NOUN, "/I/g,z/&/m/^/'n/2//S//^/n");
-
-    assert(word.getColor() == NONE);
-    word.setColor(RED);
-
-    std::cout << "The word " << word.getEnglish();
-    std::cout << " is pronounced " << word.getPronunciation() << std::endl;
-    std::cout << word.getEnglish() << " has " << word.getSyllables() << " syllables and " << word.phonemeCount() << " phonemes." << std::endl;
-
-    assert(word.getSyllables() == 5);
-    assert(word.phonemeCount() == 11);
-    assert(word.getColor() == RED);
-
-    word.addPhoneme(ZZ);
-
-    assert(word.getSyllables() == 5);
-    assert(word.phonemeCount() == 12);
-
-    std::cout << "== COLOR PRINT TEST ==" << std::endl;
-    word.printInColor();
-    std::cout << std::endl;
-
-    std::cout << "✓ Make Word test passed\n";
-}
-
-void test_cout_operator_overload() {
-    Word word("operation", NOUN, ",/A/p/^/'r/2//S//^/n");
-    word.setColor(BLUE_BRIGHT);
-
-    std::cout << word << std::endl;
-
-    std::cout << "✓ Operator Overload test passed\n";
-}
-
+#include "../include/RhymeEngine.h"
 
 int main() {
-    std::cout << "Running tests..." << std::endl;
+    //run tests without crashing
+    std::cout << "==TEST MAKE TEXT FROM FILES==" << std::endl;
+    try{
+    RhymeEngine rhymeEngine;
+    rhymeEngine.createDictionary();
+    std::cout << "Testing basic file ..." << std::endl;
+    rhymeEngine.runRhymeEngine("../tests/test/test1");
+    std::cout << "✓ Basic file test passed\n\n";
+    std::cout << "Testing empty file..." << std::endl;
+    rhymeEngine.runRhymeEngine("../tests/test/test2");
+    std::cout << "✓ Empty file test passed\n\n";
+    std::cout << "Testing nonsense file..." << std::endl;
+    rhymeEngine.runRhymeEngine("../tests/test/test3");
+    std::cout << "✓ Nonsense file input passed\n\n";
+    std::cout << "Testing complicated file ..." << std::endl;
+    rhymeEngine.runRhymeEngine("../tests/test/test4");
+    std::cout << "✓ Complicated file input passed\n";
 
-    test_make_word();
-    test_cout_operator_overload();
-
+    }
+    catch (const std::exception& e) {
+        std::cerr << "\n❌ Test failed with exception: " << e.what() << "\n";
+        return 1;
+    }
     return 0;
-
 }

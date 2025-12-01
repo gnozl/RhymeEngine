@@ -9,23 +9,20 @@
 
 class Line {
     private:
-    int numberOfWords = 0;
-    std::vector<Word*> words;
-    int numberOfSyllables = 0;
+    std::vector<Word> words;
     //Not sure if this is the best way to store rhythm
     std::vector<bool> rhythm;
 
     public:
-    explicit Line(std::string line);
+    Line();
     ~Line();
 
-    void addWord(Word* word);
-    void setRhythm(bool stress);
-    int getNumberOfWords();
-    int getNumberOfSyllables();
-    std::vector<Word*> getWords(int index);
-    std::vector<bool> getRhythm(int index);
-    Word* getFinalWord();
+    void addWord(Word & word);
+    void setRhythm();
+    [[nodiscard]] int getNumberOfWords() const;
+    [[nodiscard]] int getNumberOfSyllables() const;
+    [[nodiscard]] std::vector<Word> getWords();
+    [[nodiscard]] std::vector<bool> getRhythm();
 };
 
 #endif //RHYMEENGINE_LINE_H

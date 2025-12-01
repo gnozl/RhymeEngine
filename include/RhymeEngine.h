@@ -7,6 +7,7 @@
 #include <string>
 
 #include "Text.h"
+using namespace std;
 
 /* Rhyme Engine
  * This handles the text submitted by the user
@@ -19,45 +20,59 @@
 
 class RhymeEngine {
 private:
-    std::string filename; // For save/load operations
-    std::vector<PHONEME> rhymes; // sequences of 3? phones to check rhymes
-    std::vector<std::tuple<PHONEME, COLOR>> rhymeColors;
-
-    std::vector<int> syllableArray;
-    std::vector<int> rhymeArray;
+    // sequences of phonemes to check rhymes against, and their associated color
+    vector<pair<string, COLOR>> rhymeColors;
+    vector<int> syllableArray;
+    vector<int> rhymeArray;
+    unordered_map<string, pair<char, string>> rhymeDictionary;
 
 public:
+
     RhymeEngine();
     ~RhymeEngine();
 
-    void run();
-    std::string getFileNameFromUser();
-    std::ifstream loadTextFile(std::string file);
+    // Turns dict.txt into an unordered map - sets up rhymeDictionary member variable
+    void createDictionary(const string& dictionaryFilePath = "../addFilesHere/dict.txt");
 
-    Text createText(std::string title, std::string file);
-    Line createLine();
-    Word createWord(std::string word);
+    void runRhymeEngine(std::string textFile = "default");
 
-    std::string findIPA(std::string word);
+    // Asks user for file to open; Returns true if successful
+    bool openTextFile(std::ifstream & file, const std::string & textFile);
 
-    std::vector<std::string> findRhymes(Word * word);
-    bool isRhyme(Word * word1, Word * word2);
+    // Using selected filestream, create Text object, using dictionary; Returns true if successful
+    Text createText(std::ifstream & inputFile);
 
-    std::string convertWordToIPA(std::string string);
+    // Edits Word object using data from dictionary
+    Word createWord(std::string &english);
 
-    bool saveTextFile(const std::string& newFileName);
+    [[nodiscard]] pair<char, string> checkForSuffixes(const std::string & key);
 
-    void matchRhymeToColors(Word * word);
-    void printColorText();
+    [[nodiscard]] pair<char, string> getDictionaryEntry(const std::string &key);
 
-    void setRhythm();
+    /* Finds exact match of word in dict.txt, inputs whole line into dictionaryEntry
+     Returns false if no match found
+     */
+    //static std::string findWordInDictionary(const std::string & english);
 
-    void createSyllableArray();
-    void createRhymeArray();
-    std::string checkForPattern(std::vector<int>);
+    // //TODO: Implement these next
+    // static std::vector<std::string> findRhymes(Word & word);
+    // static bool isRhyme(Word & word1, Word & word2);
 
-    int gradeText();
-    void printScore();
+
+    // TODO: Future Features
+    // bool saveTextFile(const std::string& newFileName);
+    //
+    // void matchRhymeToColors(Word * word);
+    // void printColorText();
+    //
+    // void setRhythm();
+    //
+    // void createSyllableArray();
+    // void createRhymeArray();
+    // std::string checkForPattern(std::vector<int>);
+    //
+    // int gradeText();
+    // void printScore();
 
 };
 
