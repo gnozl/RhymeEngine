@@ -12,11 +12,14 @@ RhymeEngine::RhymeEngine() = default;
 
 RhymeEngine::~RhymeEngine() = default;
 
-void RhymeEngine::runRhymeEngine() {
-    //std::cout << "RhymeEngine::run()" << std::endl;
-
+void RhymeEngine::runRhymeEngine(std::string textFile) {
+    std::cout << "Welcome to RhymeEngine!" << std::endl;
+    if (textFile == " ") {
+        std::cout << "Which .txt file would you like to open? ";
+        std::getline(std::cin, textFile);
+    }
     std::ifstream textFileStream;
-    if (!openTextFile(textFileStream)) {
+    if (!openTextFile(textFileStream, textFile)) {
         return;
     }
 
@@ -58,20 +61,17 @@ void RhymeEngine::createDictionary(const std::string & dictionaryFilePath) {
     rhymeDictionary = dictionary;
 }
 
-bool RhymeEngine::openTextFile(std::ifstream & file) {
+bool RhymeEngine::openTextFile(std::ifstream & file, const std::string & textFile) {
     //std::cout << "RhymeEngine::openFile()" << std::endl;
 
-    std::cout << "Welcome to RhymeEngine!" << std::endl;
-    std::cout << "Which .txt file would you like to open? ";
-    string userInput;
-    std::getline(std::cin, userInput);
-    file.open("../addFilesHere/" + userInput + ".txt");
+    file.open("../addFilesHere/" + textFile + ".txt");
     while (!file.is_open()) {
         std::cout << "Unable to open file. Please put the correct .txt file in the RhymeEngine/addFilesHere/ folder." << std::endl;
         std::cout << "Please type a new file name, or type Q to quit: ";
-        std::cin >> userInput;
-        if (userInput == "Q" || userInput == "q") {return false;}
-        file.open("../addFilesHere/" + userInput + ".txt");
+        std::string input;
+        std::cin >> input;
+        if (input == "Q" || input == "q") {return false;}
+        file.open("../addFilesHere/" + input + ".txt");
         }
     std::cout << "File opened successfully." << std::endl;
     return true;

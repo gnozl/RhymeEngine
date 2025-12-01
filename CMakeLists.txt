@@ -36,3 +36,4 @@ add_test(NAME EnumTest COMMAND test_enums)
 add_test(NAME WordMakeTest COMMAND test_word_make)
 add_test(NAME DictionaryTest COMMAND test_dictionary)
 
+add_executable(test_rhyme_engine tests/test_rhyme_engine.cpp)

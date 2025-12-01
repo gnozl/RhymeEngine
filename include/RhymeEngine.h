@@ -34,10 +34,10 @@ public:
     // Turns dict.txt into an unordered map - sets up rhymeDictionary member variable
     void createDictionary(const string& dictionaryFilePath = "../addFilesHere/dict.txt");
 
-    void runRhymeEngine();
+    void runRhymeEngine(std::string textFile = " ");
 
     // Asks user for file to open; Returns true if successful
-    bool openTextFile(std::ifstream & file);
+    bool openTextFile(std::ifstream & file, const std::string & textFile);
 
     // Using selected filestream, create Text object, using dictionary; Returns true if successful
     Text createText(std::ifstream & inputFile);
