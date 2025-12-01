@@ -47,6 +47,7 @@ void RhymeEngine::createDictionary(const std::string & dictionaryFilePath) {
         std::string pronunciation;
         getline(stream, partOfSpeech, ' ');
         getline(stream, pronunciation, '\r');
+        std::erase(pronunciation, '/');
         pair entry = {partOfSpeech[0], pronunciation};
         dictionary.insert({firstWord, entry});
         count++;
@@ -120,42 +121,50 @@ pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) {
     pair<char, string> dictionaryEntry;
     std::vector<std::string> suffixes {"ies", "ied",  "ing", "ed", "es","ly", "y", "s", "d"};
 
-    int suffixCase = 0;
     for (const string suffix : suffixes) {
-        suffixCase++;
         if (key.size() - suffix.size() > 1) {
             string substring = key.substr(key.size()-suffix.size(), key.size()-1);
             if (substring == suffix) { //if the end of the word matches a suffix
-                string base_word = key.substr(0, key.size()-1 - suffix.size());
+                string base_word = key.substr(0, key.size() - suffix.size()); // cut off the suffix
                 if (suffix == "ies" || suffix == "ied") { // hurried
-                    base_word = base_word.substr(0, base_word.size()-2); // hurr
                     base_word += 'y'; //  hurr-> hurry
                 }
+                bool found = false;
                 if (rhymeDictionary.contains(base_word)) {
                     dictionaryEntry = rhymeDictionary.at(base_word);
-                    //TODO: Add suffixes?
+                    found = true;
+                }
+                if (!found) { //if the final two letters match (swimming -> swim)
+                    if ((base_word[base_word.length()-1]) == base_word[base_word.length()-2]) {
+                        base_word = base_word.substr(0, base_word.length()-2);
+                        if (rhymeDictionary.contains(base_word)) {
+                            dictionaryEntry = rhymeDictionary.at(base_word);
+                            found = true;
+                        }
+                    }
+                }
+
+                //TODO: Add suffixes?
+                if (found) {
                     if (suffix == "s" || suffix == "ies") {dictionaryEntry.second += 'z';} // dog -> dogs
                     else if ( suffix == "ied") {dictionaryEntry.second += 'd';} // hurry -> hurried
                     else if (suffix == "ing") {dictionaryEntry.second += "iN";} //box -> boxing
                     else if (suffix == "es") {dictionaryEntry.second += "Iz";} // box -> boxes
                     else if (suffix == "ly") {dictionaryEntry.first = 'v'; dictionaryEntry.second += "li";} //quick -> quickly
-                    else if (suffix ==  "y") {dictionaryEntry.second += "i";} // jump -> jumpy
-                    else if (suffix == "d") {dictionaryEntry.second += 'd';} // lie -> lied
-                    else if (suffix == "ed") {
+                    else if (suffix ==  "y") {dictionaryEntry.first = 'A'; dictionaryEntry.second += "i";} // jump -> jumpy
+                    else if (suffix == "ed" || suffix == "d") {
                         char finalSound = dictionaryEntry.second[dictionaryEntry.second.size()-1];
                         if (finalSound == 'd' || finalSound == 't') {
                             dictionaryEntry.second += "Id"; // load -> loaded, lift -> lifted
-                        } else if (finalSound == 'z' || finalSound == 'D') {
-                            dictionaryEntry.second += "d"; // sneeze -> sneezed, clothe -> clothed
                         } else {
-                            dictionaryEntry.second += "t"; // jump -> jumped
+                            dictionaryEntry.second += "d"; // sneeze -> sneezed, clothe -> clothed
                         }
                     }
                     return dictionaryEntry;
                 }
             }
         }
-    }
+    } // end of suffixes
     return dictionaryEntry;
 }
 
@@ -188,77 +197,6 @@ pair<char, string> RhymeEngine::getDictionaryEntry(const std::string & key) {
     if (found) {return dictionaryEntry;}
     else {throw std::runtime_error("Failed to find dictionary entry for " + key);}
 }
-
-// std::string RhymeEngine::findWordInDictionary(const std::string & english) {
-//
-//         if (dictionaryWord == english) { // Perfect match found
-//             found = true;
-//             dictionaryEntry += dictionaryWord;
-//             dictionaryEntry += " ";
-//             dictionaryEntry += dictionaryPOS;
-//             dictionaryEntry += " ";
-//             dictionaryEntry += dictionaryPronunciation;
-//         }
-//
-//         if (!found && dictionaryWord[dictionaryWord.length()-1]=='y') { // if word ends in y
-//             for (std::string suffix : {"ies", "ied"}) {
-//                 std::string wordWithSuffix;
-//                 wordWithSuffix = dictionaryWord.substr(0, dictionaryWord.length()-1);
-//                 wordWithSuffix += suffix;
-//
-//                 if (wordWithSuffix == english) {
-//                     found = true;
-//                     dictionaryEntry = wordWithSuffix;
-//                     dictionaryEntry.append(" ");
-//                     dictionaryEntry += dictionaryPOS;
-//                     dictionaryEntry.append(" ");
-//                     dictionaryEntry += dictionaryPronunciation;
-//                     if (suffix == "ies") {dictionaryEntry.append("z");} //  spy -> spies
-//                     if (suffix == "ied") {dictionaryEntry.append("d");} //  spy -> spied
-//                     break;
-//                 }
-//             }
-//         }
-//
-//         if (!found) {
-//             std::string wordWithSuffix;
-//             for (const std::string& suffix : suffixes) {
-//                 wordWithSuffix = dictionaryWord + suffix;
-//                 if (wordWithSuffix == english) {
-//                     found = true;
-//                     dictionaryEntry.append(wordWithSuffix);
-//                     dictionaryEntry.append(" ");
-//                     dictionaryEntry += dictionaryPOS;
-//                     dictionaryEntry.append(" ");
-//                     dictionaryEntry += dictionaryPronunciation;
-//                     if (suffix == "s") {dictionaryEntry.append("z");} // dog -> dogs
-//                     if (suffix == "es") {dictionaryEntry.append("Iz");} // fox -> foxes
-//                     if (suffix == "ing") {dictionaryEntry.append("iN");} // jump -> jumping
-//                     if (suffix == "ed") {
-//                         if (wordWithSuffix[wordWithSuffix.length()-3] == 't' || wordWithSuffix[wordWithSuffix.length()-3] == 'd') {
-//                             dictionaryEntry.append("Id"); // band -> banded
-//                         } else {
-//                             dictionaryEntry.append("t"); // jump -> jumped
-//                         }
-//                     }
-//                     if (suffix == "ly") {dictionaryEntry.append("li");} // quick -> quickly
-//                     break;
-//                 }
-//             }
-//         }
-//
-//         if (found) {
-//             dictionary.clear();
-//             dictionary.seekg(0);
-//             return true;
-//         }
-//     }
-//     std::cout << "Unable to find word " << english << " in dictionary." << std::endl;
-//     // Move the read pointer to the beginning of the file
-//     dictionary.clear();
-//     dictionary.seekg(0);
-//     return false; // Could not find word in dictionary
-// }
 
 // std::vector<std::string> RhymeEngine::findRhymes(Word & word) {
 //     std::vector<std::string> result;

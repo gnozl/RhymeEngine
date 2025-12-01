@@ -99184,7 +99184,7 @@ swill V sw/I/l
 swim V sw/I/m
 swim_bladder h sw/I/m_'bl/&/d/^/r
 swimmeret N 'sw/I/m/^/,r/E/t
-swimming N 'sw/I/m/I//N/
+swimming N 'sw/I/m/i//N/
 swimming_bath h 'sw/I/m/I//N/_b/&//T/
 swimming_bladder h 'sw/I/m/I//N/_'bl/&/d/^/r
 swimming_crab h 'sw/I/m/I//N/_kr/&/b
