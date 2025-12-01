@@ -86,8 +86,13 @@ Text RhymeEngine::createText(std::ifstream & inputFile) {
     while (std::getline(inputFile, nextLineFromInputFile, '\n')) { // std::getline returns false at End of File
         Line newline;
         std::string nextWordString;
+        for (char16_t c : {u'—', u'-', u'/'}) { // Replace certain characters with spaces
+            std::replace(nextWordString.begin(), nextWordString.end(), c, u' ');
+        }
         stringstream stream(nextLineFromInputFile);
+        stream >> std::ws; // clear all leading whitespace so getline doesnt grab empty space
         while (std::getline(stream, nextWordString, ' ')) { // Returns false at end of stream
+            if (nextWordString == " "){continue;}
             wordAttempts++;
             try {
                 Word newWord = createWord(nextWordString);
@@ -110,7 +115,14 @@ Text RhymeEngine::createText(std::ifstream & inputFile) {
 Word RhymeEngine::createWord(std::string &english) {
     //cout << "Creating word: " << english << endl;
 
-    pair<char, string> dictionaryEntry = getDictionaryEntry(english);
+    std::string cleanKey = english;
+    cleanKey.erase(ranges::remove_if(cleanKey, [](char c) {
+        return !std::isalnum(c);
+    }).begin(), cleanKey.end()); // remove anything that is not alpha-numeric
+
+    ranges::transform(cleanKey, cleanKey.begin(), ::tolower);
+
+    pair<char, string> dictionaryEntry = getDictionaryEntry(cleanKey);
 
     Word word(english, dictionaryEntry.first, dictionaryEntry.second);
 
@@ -118,7 +130,7 @@ Word RhymeEngine::createWord(std::string &english) {
 }
 
 pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) {
-    pair<char, string> dictionaryEntry;
+    pair<char, string> dictionaryEntry{' '," "};
     std::vector<std::string> suffixes {"ies", "ied",  "ing", "ed", "es","ly", "y", "s", "d"};
 
     for (const string suffix : suffixes) {
@@ -170,22 +182,19 @@ pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) {
 
 pair<char, string> RhymeEngine::getDictionaryEntry(const std::string & key) {
     //std::cout << "RhymeEngine::getDictionaryEntry: " << key << std::endl;
-    std::string lowercaseKey = key;
-    ranges::transform(lowercaseKey, lowercaseKey.begin(), ::tolower);
 
     bool found = false;
     pair<char, string> dictionaryEntry;
 
-    if (rhymeDictionary.contains(lowercaseKey)) {
-        //std::cout << "Found " << lowercaseKey << " in dictionary." << std::endl;
-        dictionaryEntry = rhymeDictionary.at(lowercaseKey);
+    if (rhymeDictionary.contains(key)) {
+        dictionaryEntry = rhymeDictionary.at(key);
         found = true;
     }
 
 
     if (!found) {
-        dictionaryEntry = checkForSuffixes(lowercaseKey);
-        if (!dictionaryEntry.second.empty()) {
+        dictionaryEntry = checkForSuffixes(key);
+        if (dictionaryEntry != std::pair{' '," "}) {
             found = true;
         }
     }
