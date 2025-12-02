@@ -5,8 +5,8 @@
 **Test files:**   
  `tests/test_rhyme_engine.cpp`  
  `tests/test_enums.cpp`  
- `tests/test_word.cpp`
- `tests/test_dictionary.cpp`
+ `tests/test_word.cpp`  
+ `tests/test_dictionary.cpp`  
  
 Build system:  
 `cmake`   
@@ -26,29 +26,31 @@ Run command:
 
 
 **Expected result**:  
-- Text is created using RhymeEngine::createText(filename)
-- Each Word is created successfully
-- Text is printed out again
+- Text is created using RhymeEngine::createText(filename)  
+- Each Word is created successfully  
+- Text is printed out again  
 
 **Result**: ✅ Pass
 
 ### Test 2: Empty File  
 -  
 **What it tests**:  
-- Creating a text from an empty file
+- Creating a text from an empty file  
 
-**Expected result**:  
-- Empty Text is made without crashing
-**Result**: ✅ Pass
+**Expected result**:   
+- Empty Text is made without crashing  
+
+**Result**: ✅ Pass  
 
 ### Test 3: Nonsense file
 -
 **What it tests**: 
-- Creating a Text from nonsense file
-- 
+- Creating a Text from nonsense file  
+
 **Expected result**: 
-- Fails to create Words, prints out ???? instead
-**Result**: ✅ Pass
+Fails to create Words, prints out ???? instead  
+
+**Result**: ✅ Pass  
 
 ### Test 4: Complicated File
 -
@@ -58,9 +60,10 @@ Run command:
 - file includes empty lines
 
 **Expected result**:
-- Fails to create Words, prints out ??? for english and ???? for pronunciation instead
-  **Result**: ✅ Pass
-- 
+- Fails to create Words, prints out ??? for english and ???? for pronunciation instead  
+
+**Result**: ✅ Pass
+
 ### CTest Output
 ```
 test 4
@@ -70,7 +73,7 @@ test 4
 4: Working Directory: /Users/gerardo/CIS25/RhymeEngine/build
 4: Test timeout computed to be: 10000000
 4: ==TEST MAKE TEXT FROM FILES==
-4: Created dictionary from ../addFilesHere/dict.txt with 110021 entries.
+4: Created dictionary from ../src/dict.txt with 110021 entries.
 4: Testing basic file ...
 4: Welcome to RhymeEngine!
 4: File opened successfully.
