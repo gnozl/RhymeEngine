@@ -15,13 +15,14 @@ RhymeEngine::~RhymeEngine() = default;
 void RhymeEngine::runRhymeEngine(std::string textFile) {
     std::cout << "Welcome to RhymeEngine!" << std::endl;
     string fileToOpen = textFile;
-    if (textFile == "default") {
+    if (textFile == "default") { // if run without parameters, defaults to asking user for a file
         std::cout << "Which .txt file would you like to open? ";
         std::getline(std::cin, fileToOpen);
     } else {fileToOpen = textFile;}
+
     std::ifstream textFileStream;
     if (!openTextFile(textFileStream, fileToOpen)) {
-        return;
+        return; // if not file given, or user types Q, quit program
     }
 
     Text text = createText(textFileStream);
@@ -43,17 +44,17 @@ void RhymeEngine::createDictionary(const std::string & dictionaryFilePath) {
 
     std::string nextLine;
     std::string firstWord;
-    while (std::getline(dictionaryFile, nextLine)) {
-        stringstream stream(nextLine);
-        getline(stream, firstWord, ' ');
+    while (std::getline(dictionaryFile, nextLine)) { // for each line in dict.txt
+        stringstream stream(nextLine); // read line
+        getline(stream, firstWord, ' '); // grab first word in line as key
         ranges::transform(firstWord, firstWord.begin(), ::tolower); // all keys should be stored in lowercase
         std::string partOfSpeech;
         std::string pronunciation;
-        getline(stream, partOfSpeech, ' ');
-        getline(stream, pronunciation, '\r');
-        std::erase(pronunciation, '/');
+        getline(stream, partOfSpeech, ' '); // second word is the part of speech
+        getline(stream, pronunciation, '\r'); //3rd word is the pronunciation; the dictionary file has /r at the end of lines, before the \n character??
+        std::erase(pronunciation, '/'); //TODO: maybe edit the dictionary file directly and remove these? i don't know exactly what they signify
         pair entry = {partOfSpeech[0], pronunciation};
-        dictionary.insert({firstWord, entry});
+        dictionary.insert({firstWord, entry}); // dictionary key is string, value is a pair<char,string>
         count++;
     }
     cout << "Created dictionary from " << dictionaryFilePath << " with " << count << " entries." << endl;
@@ -96,7 +97,7 @@ Text RhymeEngine::createText(std::ifstream & inputFile) {
 
         std::string nextWordString;
         while (std::getline(stream, nextWordString, ' ')) { // Returns false at end of stream
-            if (nextWordString == " "){continue;}
+            if (nextWordString == " "){continue;} // skip empty spaces, TODO: maybe use std::ws instead to skip?
             wordAttempts++;
             try {
                 Word newWord = createWord(nextWordString);
@@ -110,7 +111,7 @@ Text RhymeEngine::createText(std::ifstream & inputFile) {
             }
         }
         // End of line stream
-        text.addLine(newline);
+        text.addLine(newline); //add line to text
     }
     std::cout << "Text file created: " << wordSuccess << "/" << wordAttempts << " words created." << std::endl;
     return text;
@@ -120,11 +121,12 @@ Word RhymeEngine::createWord(std::string &english) {
     //cout << "Creating word: " << english << endl;
 
     std::string cleanKey = english;
+    // https://stackoverflow.com/questions/6319872/how-to-strip-all-non-alphanumeric-characters-from-a-string-in-c
     cleanKey.erase(ranges::remove_if(cleanKey, [](char c) {
         return !std::isalnum(c);
     }).begin(), cleanKey.end()); // remove anything that is not alpha-numeric
 
-    ranges::transform(cleanKey, cleanKey.begin(), ::tolower);
+    ranges::transform(cleanKey, cleanKey.begin(), ::tolower); // make lowercase
 
     pair<char, string> dictionaryEntry = getDictionaryEntry(cleanKey);
 
@@ -135,6 +137,8 @@ Word RhymeEngine::createWord(std::string &english) {
 
 pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) {
     pair<char, string> dictionaryEntry{' '," "};
+    //TODO: add more suffixes, clean this up
+    //TODO: currently cannot find: happiest, happily
     std::vector<std::string> suffixes {"ies", "ied",  "ing", "ed", "es","ly", "y", "s", "d"};
 
     for (const string suffix : suffixes) {
@@ -160,7 +164,6 @@ pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) {
                     }
                 }
 
-                //TODO: Add suffixes?
                 if (found) {
                     if (suffix == "s" || suffix == "ies") {dictionaryEntry.second += 'z';} // dog -> dogs
                     else if ( suffix == "ied") {dictionaryEntry.second += 'd';} // hurry -> hurried

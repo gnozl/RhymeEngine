@@ -32,27 +32,25 @@ public:
     ~RhymeEngine();
 
     // Turns dict.txt into an unordered map - sets up rhymeDictionary member variable
-    void createDictionary(const string& dictionaryFilePath = "../addFilesHere/dict.txt");
+    void createDictionary(const string& dictionaryFilePath = "../src/dict.txt");
 
     void runRhymeEngine(std::string textFile = "default");
 
     // Asks user for file to open; Returns true if successful
     bool openTextFile(std::ifstream & file, const std::string & textFile);
 
-    // Using selected filestream, create Text object, using dictionary; Returns true if successful
+    // Using selected filestream, create Text object, using dictionary; Returns text object
     Text createText(std::ifstream & inputFile);
 
     // Edits Word object using data from dictionary
     Word createWord(std::string &english);
 
-    [[nodiscard]] pair<char, string> checkForSuffixes(const std::string & key);
-
-    [[nodiscard]] pair<char, string> getDictionaryEntry(const std::string &key);
-
     /* Finds exact match of word in dict.txt, inputs whole line into dictionaryEntry
-     Returns false if no match found
+     Returns {' ', " "} if no match found
      */
-    //static std::string findWordInDictionary(const std::string & english);
+    [[nodiscard]] pair<char, string> getDictionaryEntry(const std::string &key);
+    // If basic getDictionaryEntry search fails, run this
+    [[nodiscard]] pair<char, string> checkForSuffixes(const std::string & key);
 
     // //TODO: Implement these next
     // static std::vector<std::string> findRhymes(Word & word);
