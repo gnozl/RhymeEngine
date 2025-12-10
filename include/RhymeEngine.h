@@ -22,6 +22,7 @@ class RhymeEngine {
 private:
     // sequences of phonemes to check rhymes against, and their associated color
     vector<pair<string, COLOR>> rhymeColors;
+    COLOR next_rhyme_color = RED;
     vector<int> syllableArray;
     vector<int> rhymeArray;
     unordered_map<string, pair<char, string>> rhymeDictionary;
@@ -39,6 +40,8 @@ public:
     // Asks user for file to open; Returns true if successful
     bool openTextFile(std::ifstream & file, const std::string & textFile);
 
+    Text createText(const string &file);
+
     // Using selected filestream, create Text object, using dictionary; Returns text object
     Text createText(std::ifstream & inputFile);
 
@@ -48,13 +51,21 @@ public:
     /* Finds exact match of word in dict.txt, inputs whole line into dictionaryEntry
      Returns {' ', " "} if no match found
      */
-    [[nodiscard]] pair<char, string> getDictionaryEntry(const std::string &key);
-    // If basic getDictionaryEntry search fails, run this
-    [[nodiscard]] pair<char, string> checkForSuffixes(const std::string & key);
+    [[nodiscard]] pair<char, string> getDictionaryEntry(const std::string &key) const;
+    /* If basic getDictionaryEntry search fails, run this
+     * Returns {' ', " "} if no match found
+    */
+    [[nodiscard]] pair<char, string> checkForSuffixes(const std::string & key) const;
 
-    // //TODO: Implement these next
-    // static std::vector<std::string> findRhymes(Word & word);
-    // static bool isRhyme(Word & word1, Word & word2);
+    bool isVowel(char phone) const;
+
+    // Returns the number of matching phonemes, beginning at the end of the word
+    int rhymeStrength (const Word & word1, const Word & word2) const;
+    // Returns the edit distance between two strings
+    int editDistanceSpaceOptimized(string str1, string str2) const;
+
+    void setRhymes(Text & text);
+    COLOR setNewColor(Word & word);
 
 
     // TODO: Future Features

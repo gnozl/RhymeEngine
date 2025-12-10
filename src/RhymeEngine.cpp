@@ -26,6 +26,7 @@ void RhymeEngine::runRhymeEngine(std::string textFile) {
     }
 
     Text text = createText(textFileStream);
+    setRhymes(text);
 
     text.print();
     text.printIPA();
@@ -78,6 +79,17 @@ bool RhymeEngine::openTextFile(std::ifstream & file, const std::string & textFil
     std::cout << "File opened successfully." << std::endl;
     return true;
     }
+
+Text RhymeEngine::createText(const string & file) {
+    ifstream fileStream;
+    fileStream.open(file);
+    if (!fileStream.is_open()) {
+        throw std::runtime_error("Unable to open file.");
+    }
+    Text text = createText(fileStream);
+    fileStream.close();
+    return text;
+}
 
 Text RhymeEngine::createText(std::ifstream & inputFile) {
     //std::cout << "RhymeEngine::createText()" << std::endl;
@@ -135,7 +147,34 @@ Word RhymeEngine::createWord(std::string &english) {
     return word;
 }
 
-pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) {
+pair<char, string> RhymeEngine::getDictionaryEntry(const std::string & key) const {
+    //std::cout << "RhymeEngine::getDictionaryEntry: " << key << std::endl;
+
+    bool found = false;
+    pair<char, string> dictionaryEntry;
+
+    if (rhymeDictionary.contains(key)) {
+        dictionaryEntry = rhymeDictionary.at(key);
+        found = true;
+    }
+
+
+    if (!found) {
+        dictionaryEntry = checkForSuffixes(key);
+        if (dictionaryEntry != std::pair{' '," "}) {
+            found = true;
+        }
+    }
+
+    // if (!found) {
+    //     //TODO: Ask user to manually input dictionary entries / user-created dictionary
+    // }
+
+    if (found) {return dictionaryEntry;}
+    else {throw std::runtime_error("Failed to find dictionary entry for " + key);}
+}
+
+pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) const {
     pair<char, string> dictionaryEntry{' '," "};
     //TODO: add more suffixes, clean this up
     //TODO: currently cannot find: happiest, happily
@@ -187,31 +226,114 @@ pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) {
     return dictionaryEntry;
 }
 
-pair<char, string> RhymeEngine::getDictionaryEntry(const std::string & key) {
-    //std::cout << "RhymeEngine::getDictionaryEntry: " << key << std::endl;
-
-    bool found = false;
-    pair<char, string> dictionaryEntry;
-
-    if (rhymeDictionary.contains(key)) {
-        dictionaryEntry = rhymeDictionary.at(key);
-        found = true;
+bool RhymeEngine::isVowel(char phone) const {
+    if (!charToPhone.contains(phone)) {
+        return false;
     }
+    PHONEME phoneme = charToPhone.at(phone);
+    if (phoneme > 0 && phoneme < BB) return true;
+    return false;
+}
 
+int RhymeEngine::rhymeStrength(const Word &word1, const Word &word2) const {
+    string ipa1 = word1.getPronunciation();
+    reverse(ipa1.begin(), ipa1.end());
+    string ipa2 = word2.getPronunciation();
+    reverse(ipa2.begin(), ipa2.end());
 
-    if (!found) {
-        dictionaryEntry = checkForSuffixes(key);
-        if (dictionaryEntry != std::pair{' '," "}) {
-            found = true;
+    int counter = 0;
+    for (int i=0; i < min(ipa1.size(), ipa2.size()); i++) {
+        if (ipa1[i] == ipa2[i]) {
+            counter++;
+            if (isVowel(ipa1[i])){
+                counter++;
+            }
+        }
+        if (i > counter + 2) {
+            return 0;
         }
     }
+    return counter;
+}
 
-    // if (!found) {
-    //     //TODO: Ask user to manually input dictionary entries / user-created dictionary
-    // }
+// C++ program to calculate minimum edit distance
+// https://www.geeksforgeeks.org/cpp/edit-distance-in-cpp/
+// TODO: Use this somehow?
+int RhymeEngine::editDistanceSpaceOptimized(string str1, string str2) const {
 
-    if (found) {return dictionaryEntry;}
-    else {throw std::runtime_error("Failed to find dictionary entry for " + key);}
+    // Length of the first string
+    int m = str1.length();
+    // Length of the second string
+    int n = str2.length();
+
+    // Create two vectors to store the current and previous
+    // rows of the DP table
+    vector<int> prev(n + 1), curr(n + 1);
+
+    // Initialize the prev vector with base case values
+    for (int j = 0; j <= n; j++) {
+        // Edit distance when str1 is empty
+        prev[j] = j;
+    }
+
+    // Iterate over each character of str1
+    for (int i = 1; i <= m; i++) {
+        // Initialize the first element of curr
+        curr[0] = i;
+
+        // Compute edit distance for each substring of str2
+        for (int j = 1; j <= n; j++) {
+            // If characters match, no new operation needed
+            if (str1[i - 1] == str2[j - 1]) {
+                curr[j] = prev[j - 1];
+            }
+            else {
+                // Consider all three operations: insert,
+                // remove, replace
+                curr[j] = 1
+                          + min(min(prev[j], curr[j - 1]),
+                                prev[j - 1]);
+            }
+        }
+
+        // Move to the next row by swapping prev and curr
+        prev = curr;
+    }
+
+    // Return the minimum edit distance
+    return prev[n];
+}
+
+void RhymeEngine::setRhymes(Text & text) {
+    vector<Word *> ending_words;
+    for (Line & line : text.getLines()) {
+        Word & word = line.getWords().back();
+        ending_words.push_back(&word);
+        }
+    for (Word * word1 : ending_words) {
+        if (word1->getColor() != NONE) {
+            continue;
+        }
+        setNewColor(*word1);
+        for (Word * word2 : ending_words) {
+            if (rhymeStrength(*word1, *word2) > 2) {
+                word2->setColor(word1->getColor());
+            }
+        }
+    }
+}
+
+COLOR RhymeEngine::setNewColor(Word &word) {
+    word.setColor(next_rhyme_color);
+
+    auto index = std::find(color_vec.begin(), color_vec.end(), next_rhyme_color);
+    if (index != color_vec.end() && std::next(index) != color_vec.end()) {
+        next_rhyme_color = *std::next(index);
+    } else {
+        // Cycle back to the first element or handle end-of-enum
+        next_rhyme_color = color_vec.front();
+    }
+    return word.getColor();
 }
 
 // std::vector<std::string> RhymeEngine::findRhymes(Word & word) {

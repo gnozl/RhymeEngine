@@ -28,7 +28,14 @@ int main()
 
     RhymeEngine engine;
     engine.createDictionary();
-    engine.runRhymeEngine();
-
+    while (true) {
+        engine.runRhymeEngine();
+        std::cout << "Would you like to run Rhyme Engine again? (Y/N): )";
+        std::string input;
+        std::getline(std::cin, input);
+        if (input != "Y" && input != "y" && input != "yes") {
+            break;
+        }
+    }
     return 0;
 }

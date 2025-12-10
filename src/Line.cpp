@@ -28,10 +28,6 @@ int Line::getNumberOfSyllables() const {
     return numberOfSyllables;
 }
 
-std::vector<Word> Line::getWords() {
-    return this->words;
-}
-
 std::vector<bool> Line::getRhythm() {
     return this->rhythm;
 }

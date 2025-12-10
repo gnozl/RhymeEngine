@@ -25,14 +25,14 @@ class Text {
 
 
     [[nodiscard]] int getTotalWords() const;
-    [[nodiscard]] std::string getRhymePattern() {return rhymePattern;};
-    [[nodiscard]] std::vector<Line> getLines() {return lines;};
+    [[nodiscard]] std::string getRhymePattern() const {return rhymePattern;}
+    [[nodiscard]] std::vector<Line> & getLines() {return lines;}
 
     void setRhymePattern(const std::string& rhymePattern);
     void addLine(Line & line);
 
-    void print();
-    void printIPA();
+    void print() const;
+    void printIPA() const;
 };
 
 #endif //RHYMEENGINE_TEXT_H

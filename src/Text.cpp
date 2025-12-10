@@ -28,7 +28,7 @@ void Text::addLine(Line & line) {
     this->lines.push_back(line);
 }
 
-void Text::print() {
+void Text::print() const{
     //std::cout << "Text::print()" << std::endl;
     for (Line line : lines) {
         for (const Word& word : line.getWords()) {
@@ -38,7 +38,7 @@ void Text::print() {
     }
 }
 
-void Text::printIPA() {
+void Text::printIPA() const {
     //std::cout << "Text::printIPA()" << std::endl;
     for (Line line : lines) {
         for (const Word& word : line.getWords()) {

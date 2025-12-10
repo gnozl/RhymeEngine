@@ -21,7 +21,7 @@ class Line {
     void setRhythm();
     [[nodiscard]] int getNumberOfWords() const;
     [[nodiscard]] int getNumberOfSyllables() const;
-    [[nodiscard]] std::vector<Word> getWords();
+    [[nodiscard]] std::vector<Word> & getWords(){return words;}
     [[nodiscard]] std::vector<bool> getRhythm();
 };
 
