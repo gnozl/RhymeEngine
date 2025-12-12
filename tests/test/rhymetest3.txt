@@ -1,0 +1,16 @@
+red
+orange
+blue
+green
+yellow
+pink
+purple
+tall
+short
+quick
+slow
+fast
+round
+square
+smart
+dumb

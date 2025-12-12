@@ -27,7 +27,7 @@ int main() {
         cout << "Care & Wolves have rhyme strength " << rhymeEngine.rhymeStrength(care, wolves) << endl;
         assert (rhymeEngine.rhymeStrength(care, wolves) == 0);
         cout << "Calling and Falling have rhyme strength " << rhymeEngine.rhymeStrength(calling, falling) << endl;
-        assert (rhymeEngine.rhymeStrength(calling, falling) == 4);
+        assert (rhymeEngine.rhymeStrength(calling, falling) == 6); // vowels are +2, consonants are +1
     }
     catch (std::exception &e) {
         std::cerr << "\n❌ Test failed with exception: " << e.what() << "\n";

@@ -29,7 +29,6 @@ void RhymeEngine::runRhymeEngine(std::string textFile) {
     setRhymes(text);
 
     text.print();
-    text.printIPA();
 
     textFileStream.close();
 }
@@ -123,7 +122,9 @@ Text RhymeEngine::createText(std::ifstream & inputFile) {
             }
         }
         // End of line stream
-        text.addLine(newline); //add line to text
+        if (newline.getNumberOfWords() > 0) {
+            text.addLine(newline); //add line to text
+        }
     }
     std::cout << "Text file created: " << wordSuccess << "/" << wordAttempts << " words created." << std::endl;
     return text;

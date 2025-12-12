@@ -36,11 +36,11 @@ target_link_libraries(test_dictionary PRIVATE RhymeEngine)
 add_executable(test_rhyme_engine tests/test_rhyme_engine.cpp)
 target_link_libraries(test_rhyme_engine PRIVATE RhymeEngine)
 
-add_executable(test_is_rhyme tests/test_rhymeStrength.cpp)
-target_link_libraries(test_is_rhyme PRIVATE RhymeEngine)
+add_executable(test_rhyme_strength tests/test_rhymeStrength.cpp)
+target_link_libraries(test_rhyme_strength PRIVATE RhymeEngine)
 
-add_executable(test_find_rhyme tests/test_highlight_rhymes.cpp)
-target_link_libraries(test_find_rhyme PRIVATE RhymeEngine)
+add_executable(test_rhyme_colors tests/test_highlight_rhymes.cpp)
+target_link_libraries(test_rhyme_colors PRIVATE RhymeEngine)
 
 # Register tests with CTest
 add_test(NAME EnumTest COMMAND test_enums)
