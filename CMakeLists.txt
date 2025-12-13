@@ -50,3 +50,5 @@ add_test(NAME RhymeEngineTest COMMAND test_rhyme_engine)
 add_test(NAME RhymeStrengthTest COMMAND test_rhyme_strength)
 add_test(NAME RhymeHighlight COMMAND test_rhyme_colors)
 
+add_executable(word2vec_distance src/distance.cpp)
+add_executable(word2vec_analogy src/analogy.cpp)
