@@ -5,6 +5,7 @@
 
 #include "../include/RhymeEngine.h"
 #include <cassert>
+#include <iostream>
 
 int main() {
     std::cout << "==RHYME STRENGTH TEST==" << std::endl;

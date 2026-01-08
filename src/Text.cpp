@@ -3,8 +3,13 @@
 //
 
 #include <string>
-#include <utility>
 #include "../include/Text.h"
+#include <sstream>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include "Word.h"
+
 
 Text::Text() = default;
 

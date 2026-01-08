@@ -1,4 +1,8 @@
 #include "../include/RhymeEngine.h"
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 //For printing colors to Windows terminal
 // #ifdef _WIN32
@@ -23,8 +27,6 @@ int main()
 // #ifdef _WIN32
 //     activateVirtualTerminal();
 // #endif
-    //TODO: Find rhymes inside text / end of lines
-    //TODO: Print out the text, with rhymes highlighted
 
     RhymeEngine engine;
     engine.createDictionary();

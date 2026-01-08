@@ -4,9 +4,17 @@
 
 #include "../include/RhymeEngine.h"
 
-#include <fstream>
-#include <sstream>
 #include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <istream>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include "Colors.h"
+#include "Text.h"
+#include "Word.h"
 
 RhymeEngine::RhymeEngine() = default;
 
@@ -14,7 +22,7 @@ RhymeEngine::~RhymeEngine() = default;
 
 void RhymeEngine::runRhymeEngine(std::string textFile) {
     std::cout << "Welcome to RhymeEngine!" << std::endl;
-    string fileToOpen = textFile;
+    std::string fileToOpen = textFile;
     if (textFile == "default") { // if run without parameters, defaults to asking user for a file
         std::cout << "Which .txt file would you like to open? ";
         std::getline(std::cin, fileToOpen);
@@ -26,7 +34,7 @@ void RhymeEngine::runRhymeEngine(std::string textFile) {
     }
 
     Text text = createText(textFileStream);
-    setRhymes(text);
+    setAllRhymes(text);
 
     text.print();
 
@@ -100,8 +108,8 @@ Text RhymeEngine::createText(std::ifstream & inputFile) {
     while (std::getline(inputFile, nextLineFromInputFile, '\n')) { // std::getline returns false at End of File
         Line newline;
 
-        for (char c : { u'-', u'/'}) { // Replace certain characters with spaces
-            std::replace(nextLineFromInputFile.begin(), nextLineFromInputFile.end(), c, ' ');
+        for (char16_t c : { u'-', u'/', u'—'}) { // Replace certain characters with spaces
+            std::replace(nextLineFromInputFile.begin(), nextLineFromInputFile.end(), c, u' ');
         }
         stringstream stream(nextLineFromInputFile);
         stream >> std::ws; // clear all leading whitespace so getline doesnt grab empty space
@@ -130,39 +138,49 @@ Text RhymeEngine::createText(std::ifstream & inputFile) {
     return text;
 }  // End of File
 
-Word RhymeEngine::createWord(std::string &english) {
+Word RhymeEngine::createWord(std::string &english) const {
     //cout << "Creating word: " << english << endl;
 
-    std::string cleanKey = english;
-    // https://stackoverflow.com/questions/6319872/how-to-strip-all-non-alphanumeric-characters-from-a-string-in-c
-    cleanKey.erase(ranges::remove_if(cleanKey, [](char c) {
-        return !std::isalnum(c);
-    }).begin(), cleanKey.end()); // remove anything that is not alpha-numeric
-
-    ranges::transform(cleanKey, cleanKey.begin(), ::tolower); // make lowercase
-
-    pair<char, string> dictionaryEntry = getDictionaryEntry(cleanKey);
-
-    Word word(english, dictionaryEntry.first, dictionaryEntry.second);
-
-    return word;
+    try {
+        pair<char, std::string> dictionaryEntry = getDictionaryEntry(english);
+        Word word(english, dictionaryEntry.first, dictionaryEntry.second);
+        return word;
+    }
+    catch (std::runtime_error & e) {
+        throw std::runtime_error(e.what());
+    }
+    catch (std::invalid_argument & e) {
+        throw std::runtime_error(e.what());
+    }
 }
 
-pair<char, string> RhymeEngine::getDictionaryEntry(const std::string & key) const {
-    //std::cout << "RhymeEngine::getDictionaryEntry: " << key << std::endl;
+pair<char, std::string> RhymeEngine::getDictionaryEntry(const std::string& key) const {
+    std::string search_key = key;
+    ranges::transform(search_key, search_key.begin(), ::tolower); // make lowercase
 
     bool found = false;
-    pair<char, string> dictionaryEntry;
+    pair<char, std::string> dictionaryEntry;
 
-    if (rhymeDictionary.contains(key)) {
-        dictionaryEntry = rhymeDictionary.at(key);
+    if (rhymeDictionary.contains(search_key)) {
+        dictionaryEntry = rhymeDictionary.at(search_key);
         found = true;
     }
 
+    if (!found) {
+        // https://stackoverflow.com/questions/6319872/how-to-strip-all-non-alphanumeric-characters-from-a-string-in-c
+        search_key.erase(ranges::remove_if(search_key, [](char c) {
+            return !std::isalnum(c);
+        }).begin(), search_key.end()); // remove anything that is not alpha-numeric
+        if (rhymeDictionary.contains(search_key)) {
+            dictionaryEntry = rhymeDictionary.at(search_key);
+            found = true;
+        }
+    }
 
     if (!found) {
-        dictionaryEntry = checkForSuffixes(key);
-        if (dictionaryEntry != std::pair{' '," "}) {
+        pair<char, std::string> suffixCheck = checkForSuffixes(search_key);
+        if (suffixCheck != std::pair{' '," "}) {
+            dictionaryEntry = suffixCheck;
             found = true;
         }
     }
@@ -182,55 +200,53 @@ pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) const {
     std::vector<std::string> suffixes {"ies", "ied",  "ing", "ed", "es","ly", "y", "s", "d"};
 
     for (const string suffix : suffixes) {
-        if (key.size() - suffix.size() > 1) {
-            string substring = key.substr(key.size()-suffix.size(), key.size()-1);
-            if (substring == suffix) { //if the end of the word matches a suffix
-                string base_word = key.substr(0, key.size() - suffix.size()); // cut off the suffix
-                if (suffix == "ies" || suffix == "ied") { // hurried
-                    base_word += 'y'; //  hurr-> hurry
-                }
-                bool found = false;
+        bool found = false;
+
+        if (key.length() <= (suffix.length() + 1)) {continue;}
+
+        string substring = key.substr(key.length()-suffix.length(), key.length()-1);
+        if (substring != suffix) {continue;} //if the end of the word matches a suffix
+
+        string base_word = key.substr(0, key.length() - suffix.length()); // cut off the suffix
+        if (suffix == "ies" || suffix == "ied") base_word += 'y'; //  hurr-> hurry
+
+        if (rhymeDictionary.contains(base_word)) {
+            dictionaryEntry = rhymeDictionary.at(base_word);
+            found = true;
+        }
+        if (!found) { //if the final two letters match (swimming -> swim)
+            if ((base_word[base_word.length()-1]) == base_word[base_word.length()-2]) {
+                base_word = base_word.substr(0, base_word.length()-2);
                 if (rhymeDictionary.contains(base_word)) {
                     dictionaryEntry = rhymeDictionary.at(base_word);
                     found = true;
                 }
-                if (!found) { //if the final two letters match (swimming -> swim)
-                    if ((base_word[base_word.length()-1]) == base_word[base_word.length()-2]) {
-                        base_word = base_word.substr(0, base_word.length()-2);
-                        if (rhymeDictionary.contains(base_word)) {
-                            dictionaryEntry = rhymeDictionary.at(base_word);
-                            found = true;
-                        }
-                    }
-                }
+            }
+        }
 
-                if (found) {
-                    if (suffix == "s" || suffix == "ies") {dictionaryEntry.second += 'z';} // dog -> dogs
-                    else if ( suffix == "ied") {dictionaryEntry.second += 'd';} // hurry -> hurried
-                    else if (suffix == "ing") {dictionaryEntry.second += "iN";} //box -> boxing
-                    else if (suffix == "es") {dictionaryEntry.second += "Iz";} // box -> boxes
-                    else if (suffix == "ly") {dictionaryEntry.first = 'v'; dictionaryEntry.second += "li";} //quick -> quickly
-                    else if (suffix ==  "y") {dictionaryEntry.first = 'A'; dictionaryEntry.second += "i";} // jump -> jumpy
-                    else if (suffix == "ed" || suffix == "d") {
-                        char finalSound = dictionaryEntry.second[dictionaryEntry.second.size()-1];
-                        if (finalSound == 'd' || finalSound == 't') {
-                            dictionaryEntry.second += "Id"; // load -> loaded, lift -> lifted
-                        } else {
-                            dictionaryEntry.second += "d"; // sneeze -> sneezed, clothe -> clothed
-                        }
-                    }
-                    return dictionaryEntry;
+        if (found) {
+            if (suffix == "s" || suffix == "ies") {dictionaryEntry.second += 'z';} // dog -> dogs
+            else if ( suffix == "ied") {dictionaryEntry.second += 'd';} // hurry -> hurried
+            else if (suffix == "ing") {dictionaryEntry.second += "iN";} //box -> boxing
+            else if (suffix == "es") {dictionaryEntry.second += "Iz";} // box -> boxes
+            else if (suffix == "ly") {dictionaryEntry.first = 'v'; dictionaryEntry.second += "li";} //quick -> quickly
+            else if (suffix ==  "y") {dictionaryEntry.first = 'A'; dictionaryEntry.second += "i";} // jump -> jumpy
+            else if (suffix == "ed" || suffix == "d") {
+                char finalSound = dictionaryEntry.second[dictionaryEntry.second.length()-1];
+                if (finalSound == 'd' || finalSound == 't') {
+                    dictionaryEntry.second += "Id"; // load -> loaded, lift -> lifted
+                } else {
+                    dictionaryEntry.second += "d"; // sneeze -> sneezed, clothe -> clothed
                 }
             }
+            return dictionaryEntry;
         }
     } // end of suffixes
     return dictionaryEntry;
 }
 
 bool RhymeEngine::isVowel(char phone) const {
-    if (!charToPhone.contains(phone)) {
-        return false;
-    }
+    if (!charToPhone.contains(phone)) return false;
     PHONEME phoneme = charToPhone.at(phone);
     if (phoneme > 0 && phoneme < BB) return true;
     return false;
@@ -305,7 +321,7 @@ int RhymeEngine::editDistanceSpaceOptimized(string str1, string str2) const {
     return prev[n];
 }
 
-void RhymeEngine::setRhymes(Text & text) {
+void RhymeEngine::setEndRhymes(Text & text) {
     vector<Word *> ending_words;
     for (Line & line : text.getLines()) {
         Word & word = line.getWords().back();
@@ -320,6 +336,50 @@ void RhymeEngine::setRhymes(Text & text) {
             if (rhymeStrength(*word1, *word2) > 2) {
                 word2->setColor(word1->getColor());
             }
+        }
+    }
+}
+
+void RhymeEngine::setAllRhymes(Text &text) {
+    vector<Word *> words;
+    for (Line & line : text.getLines()) {
+        for (Word & word : line.getWords()) {
+            words.push_back(&word);
+        }
+    }
+    for (Word * word1 : words) {
+        if (word1->getColor() != NONE) {
+            continue;
+        }
+        vector<Word *> changed_words;
+        setNewColor(*word1);
+        changed_words.push_back(word1);
+
+        bool found_rhyme = false;
+
+        for (Word * word2 : words) {
+            if (word1 == word2) {continue;}
+            if (word1->getEnglish() == word2->getEnglish()) {
+                word2->setColor(word1->getColor());
+                changed_words.push_back(word2);
+            }
+            else if (rhymeStrength(*word1, *word2) > 3) {
+                word2->setColor(word1->getColor());
+                changed_words.push_back(word2);
+                found_rhyme = true;
+            }
+        }
+        if (!found_rhyme) {
+            for (Word * changed : changed_words) {
+                changed->setColor(WHITE);
+            }
+        }
+        if (found_rhyme) {
+            std::cout << "RHYMING WORDS: ";
+            for (Word * word : changed_words) {
+                std::cout << word->getEnglish() << " ";
+            }
+            std::cout << std::endl;
         }
     }
 }

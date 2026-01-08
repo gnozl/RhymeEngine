@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include "Line.h"
+#include <fstream>
 
 class Text {
     private:

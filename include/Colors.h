@@ -5,8 +5,6 @@
 #ifndef RHYMEENGINE_COLORS_H
 #define RHYMEENGINE_COLORS_H
 
-#include <vector>
-
 /* ANSI Escape codes for foreground and background colors in terminal
  *
  *
@@ -48,19 +46,5 @@ enum COLOR {
     WHITE_BRIGHT = 97,
 };
 
-inline std::vector<COLOR> color_vec {
-    RED,
-    GREEN,
-    YELLOW,
-    BLUE,
-    MAGENTA,
-    CYAN,
-    RED_BRIGHT,
-    GREEN_BRIGHT,
-    YELLOW_BRIGHT,
-    BLUE_BRIGHT,
-    MAGENTA_BRIGHT,
-    CYAN_BRIGHT
-};
 
 #endif //RHYMEENGINE_COLORS_H

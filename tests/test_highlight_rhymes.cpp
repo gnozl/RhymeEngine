@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iostream>
 #include <RhymeEngine.h>
 
 int main() {
@@ -6,11 +7,11 @@ int main() {
     RhymeEngine engine;
     engine.createDictionary();
     Text text = engine.createText("../tests/test/rhymetest.txt");
-    engine.setRhymes(text);
+    engine.setEndRhymes(text);
     Text text2 = engine.createText("../tests/test/rhymetest2.txt");
-    engine.setRhymes(text2);
+    engine.setEndRhymes(text2);
     Text text3 = engine.createText("../tests/test/rhymetest3.txt");
-    engine.setRhymes(text3);
+    engine.setEndRhymes(text3);
     std::cout << "END OF LINE RHYMES TEST==" << std::endl;
     text.print();
     std::cout << "CORRECT RHYMES TEST==" << std::endl;

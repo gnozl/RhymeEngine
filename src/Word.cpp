@@ -7,6 +7,12 @@
 #include <sstream>
 #include <algorithm>
 #include <utility>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include "Colors.h"
 
 
 bool Word::isVowel(const PHONEME phone) {
@@ -27,6 +33,9 @@ Word::Word(std::string english, char POS, std::string pronunciation) {
 
     for (char c : this->pronunciation) {
         if (c == '/' || c == '\'' || c == ',' || c == '_') continue;
+        if (!charToPhone.contains(c)) {
+            throw std::invalid_argument("Dictionary Error for key: " + this->english  + " Pronunciation Invalid: " + this->pronunciation);
+        }
         addPhoneme(charToPhone.at(c));
     }
 }
