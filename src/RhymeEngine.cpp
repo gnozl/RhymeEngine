@@ -216,7 +216,7 @@ pair<char,string> RhymeEngine::checkForSuffixes(const std::string &key) const {
         }
         if (!found) { //if the final two letters match (swimming -> swim)
             if ((base_word[base_word.length()-1]) == base_word[base_word.length()-2]) {
-                base_word = base_word.substr(0, base_word.length()-2);
+                base_word = base_word.substr(0, base_word.length()-1);
                 if (rhymeDictionary.contains(base_word)) {
                     dictionaryEntry = rhymeDictionary.at(base_word);
                     found = true;
