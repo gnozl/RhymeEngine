@@ -3,6 +3,8 @@
 //
 
 
+#include <iostream>
+
 #include "../include/RhymeEngine.h"
 
 int main() {

@@ -20,6 +20,8 @@
 | C      | Conjunction            |
 | D      | Determiner             |
 */
+#include <unordered_map>
+#include <fstream>
 
 enum POS {
     NOUN,

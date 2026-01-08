@@ -3,7 +3,8 @@
 //
 
 #include "../include/Line.h"
-#include <sstream>
+#include <vector>
+#include "Word.h"
 
 Line::Line() = default;
 Line::~Line() = default;

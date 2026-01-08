@@ -16,3 +16,5 @@ CMakeFiles/
 cmake_install.cmake
 # Trained word2vec binary
 *.bin
+# Text Files
+/addFilesHere

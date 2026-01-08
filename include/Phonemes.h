@@ -6,7 +6,6 @@
 #define RHYMEENGINE_PHONEMES_H
 #include <unordered_map>
 
-
 enum PHONEME {
     // VOWELS
     EH,    //[-] schwa / lazy vowel

@@ -8,8 +8,8 @@
 #include "PartsOfSpeech.h"
 #include "Colors.h"
 #include <vector>
-#include <iostream>
 #include <string>
+#include <fstream>
 
 class Word {
 private:
