@@ -359,7 +359,7 @@ void RhymeEngine::setAllRhymes(Text &text) {
 
         for (Word * word2 : words) {
             if (word1 == word2) {continue;}
-            if (word1->getEnglish() == word2->getEnglish()) {
+            if (word1->getPronunciation() == word2->getPronunciation()) {
                 word2->setColor(word1->getColor());
                 changed_words.push_back(word2);
             }
